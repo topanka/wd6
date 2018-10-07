@@ -16,7 +16,7 @@ int temp_read(void)
   temp=analogRead(UCCB_TEMPERATURE_PORT);
   ra_temp.addValue(temp);
   temp=ra_temp.getAverage()+0.5;
-  g_temperature=(int)(ra_temp.getAverage()*4.8828125);
+  g_temperature=(int16_t)(ra_temp.getAverage()*4.8828125);
   
   Serial.print(temp/10);
   Serial.print(".");
@@ -25,4 +25,3 @@ int temp_read(void)
 
   return(1);  
 }
-

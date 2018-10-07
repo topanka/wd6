@@ -10,8 +10,7 @@ unsigned long g_commmode_t=0;
 
 int comm_setup(void)
 {
-//  Serial2.begin(9600);
-  Serial2.begin(19200);
+  Serial3.begin(19200);
   buildCRCTable();
 
   return(0);
@@ -29,7 +28,7 @@ int comm_packsh1(uint16_t *len)
 {
   byte lead=UCCB_WD6CU_LEAD;
   byte crc8;
-  unsigned int m1c=0,m2c=0;
+  uint16_t m1c=0,m2c=0;
   int16_t rpm1,rpm2;
   
   *len=0;
@@ -41,10 +40,13 @@ int comm_packsh1(uint16_t *len)
   else rpm2=-(int16_t)g_rpm_m2;
 
 /*
-  Serial.print(rpm1);
+  Serial.print(g_loop_cnt);
   Serial.print(" ");
-  Serial.println(rpm2);
+  Serial.println(g_loop_cps);
 */  
+
+
+//g_loop_cps=300;
   
   comm_pack1((byte*)&lead,sizeof(lead),g_w_commbuf,len);      //1:1
 //  comm_pack1((byte*)&g_w_commpkt_counter,sizeof(g_w_commpkt_counter),g_w_commbuf,len);    //4:5
@@ -57,6 +59,13 @@ int comm_packsh1(uint16_t *len)
   comm_pack1((byte*)&rpm2,sizeof(rpm2),g_w_commbuf,len);    //2:17
   comm_pack1((byte*)&g_temperature,sizeof(g_temperature),g_w_commbuf,len);    //2:19
   crc8=getCRC(g_w_commbuf,*len);
+
+/*
+  Serial.print(" ");
+  Serial.print("crc ");
+  Serial.println(crc8);
+*/
+  
   comm_pack1((byte*)&crc8,sizeof(crc8),g_w_commbuf,len);    //1:20
   
 //20 byte long  
@@ -86,7 +95,7 @@ int comm_send(void)
   
 //  delay(50);
   
-  Serial2.write((byte*)&g_w_commbuf[0],len);
+  Serial3.write((byte*)&g_w_commbuf[0],len);
   
 //  g_w_commpkt_counter=0;
   g_commmode=1;
@@ -101,8 +110,8 @@ int comm_read(int *state, unsigned char *buf, unsigned int *len)
   unsigned char crc8;
 //  static unsigned long xx=0;
 
-  while(Serial2.available()) {
-    c1=(unsigned char)Serial2.read();
+  while(Serial3.available()) {
+    c1=(unsigned char)Serial3.read();
     
     if(++nr >= 100) break;
     switch(*state) {
@@ -188,22 +197,22 @@ int comm_unpack1(unsigned char *d, unsigned int l, unsigned char *buf, unsigned 
 
 int comm_unpackuccb(unsigned char *buf, unsigned long len, 
                     unsigned long *commpkt_counter,
-                    int *battV,
-                    int *tsX,
-                    int *tsY,
-                    int *fsX,
-                    int *fsY,
-                    int *fsZ,
-                    int *fsBS,
-                    int *fsBE,
-                    int *stb,
-                    int *b6pBS,
-                    int *b6pBE,
-                    int *m1s,
-                    int *m2s,
-                    int *rdd,
-                    int *tsx,
-                    int *tsy,
+                    int16_t *battV,
+                    int16_t *tsX,
+                    int16_t *tsY,
+                    int16_t *fsX,
+                    int16_t *fsY,
+                    int16_t *fsZ,
+                    int16_t *fsBS,
+                    int16_t *fsBE,
+                    int16_t *stb,
+                    int16_t *b6pBS,
+                    int16_t *b6pBE,
+                    int16_t *m1s,
+                    int16_t *m2s,
+                    int16_t *rdd,
+                    int16_t *tsx,
+                    int16_t *tsy,
                     byte *commmode)
 {
   unsigned int l;
@@ -211,22 +220,22 @@ int comm_unpackuccb(unsigned char *buf, unsigned long len,
   l=1;
 
   comm_unpack1((unsigned char *)commpkt_counter,sizeof(unsigned long),buf,&l);
-  comm_unpack1((unsigned char *)battV,sizeof(int),buf,&l);
-  comm_unpack1((unsigned char *)tsX,sizeof(int),buf,&l);
-  comm_unpack1((unsigned char *)tsY,sizeof(int),buf,&l);
-  comm_unpack1((unsigned char *)fsX,sizeof(int),buf,&l);
-  comm_unpack1((unsigned char *)fsY,sizeof(int),buf,&l);
-  comm_unpack1((unsigned char *)fsZ,sizeof(int),buf,&l);
-  comm_unpack1((unsigned char *)fsBS,sizeof(int),buf,&l);
-  comm_unpack1((unsigned char *)fsBE,sizeof(int),buf,&l);
-  comm_unpack1((unsigned char *)stb,sizeof(int),buf,&l);
-  comm_unpack1((unsigned char *)b6pBS,sizeof(int),buf,&l);
-  comm_unpack1((unsigned char *)b6pBE,sizeof(int),buf,&l);
-  comm_unpack1((unsigned char *)m1s,sizeof(int),buf,&l);
-  comm_unpack1((unsigned char *)m2s,sizeof(int),buf,&l);
-  comm_unpack1((unsigned char *)rdd,sizeof(int),buf,&l);
-  comm_unpack1((unsigned char *)tsx,sizeof(int),buf,&l);
-  comm_unpack1((unsigned char *)tsy,sizeof(int),buf,&l);
+  comm_unpack1((unsigned char *)battV,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)tsX,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)tsY,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)fsX,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)fsY,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)fsZ,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)fsBS,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)fsBE,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)stb,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)b6pBS,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)b6pBE,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)m1s,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)m2s,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)rdd,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)tsx,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)tsy,sizeof(int16_t),buf,&l);
   comm_unpack1((unsigned char *)commmode,sizeof(byte),buf,&l);
 
   return(0);
@@ -234,7 +243,8 @@ int comm_unpackuccb(unsigned char *buf, unsigned long len,
 
 int comm_recv(void)
 {
-  int ret,stb;
+  int ret;
+  int16_t stb;
 
   g_recv_ready=0;
   if(g_commmode == 0) return(0);

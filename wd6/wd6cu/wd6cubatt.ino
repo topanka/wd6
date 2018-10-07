@@ -21,7 +21,7 @@ int batt_setup(void)
   return(0);
 }
 
-int batt_read(int *battV, int *battA)
+int batt_read(int16_t *battV, int16_t *battA)
 {
   static unsigned long l_brtv=0,l_brta=0;
   static int l_bv=0;
@@ -41,4 +41,3 @@ int batt_read(int *battV, int *battA)
   
   return(0);
 }
-

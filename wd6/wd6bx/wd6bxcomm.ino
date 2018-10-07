@@ -168,6 +168,7 @@ int comm_read(int *state, unsigned char *buf, unsigned int *len)
         }
         break;
       case UCCB_PST_CRC:
+
 /*      
   Serial.print(*len);
   Serial.print(" ");
