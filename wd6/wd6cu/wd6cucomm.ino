@@ -44,12 +44,8 @@ int comm_packsh1(uint16_t *len)
   Serial.print(" ");
   Serial.println(g_loop_cps);
 */  
-
-
-//g_loop_cps=300;
   
   comm_pack1((byte*)&lead,sizeof(lead),g_w_commbuf,len);      //1:1
-//  comm_pack1((byte*)&g_w_commpkt_counter,sizeof(g_w_commpkt_counter),g_w_commbuf,len);    //4:5
   comm_pack1((byte*)&g_loop_cps,sizeof(g_loop_cps),g_w_commbuf,len);    //4:5
   comm_pack1((byte*)&g_battV,sizeof(g_battV),g_w_commbuf,len);    //2:7
   comm_pack1((byte*)&g_battA,sizeof(g_battA),g_w_commbuf,len);    //2:9
