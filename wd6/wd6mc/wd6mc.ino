@@ -6,11 +6,11 @@
 #include "sh1tmr.h"
 #include "uccbcrc.h"
 
-VNH5019MD g_md_J1(0,0,0,0,0,0,&OCR4C,5,wd6re_isrJ1);
-VNH5019MD g_md_J2(0,0,0,0,0,0,&OCR4C,5,wd6re_isrJ2);
+VNH5019MD g_md_J1(0,0,0,0,0,0,&OCR4A,0,wd6re_isrJ1);
+VNH5019MD g_md_J2(24,25,7,22,23,A2,&OCR4B,1,wd6re_isrJ2);
 VNH5019MD g_md_J3(28,29,8,26,27,A3,&OCR4C,5,wd6re_isrJ3);
-VNH5019MD g_md_B1(0,0,0,0,0,0,&OCR5A,2,wd6re_isrB1);
-VNH5019MD g_md_B2(0,0,0,0,0,0,&OCR5A,2,wd6re_isrB2);
+VNH5019MD g_md_B1(0,0,0,44,0,0,&OCR5C,4,wd6re_isrB1);
+VNH5019MD g_md_B2(0,0,0,45,0,0,&OCR5B,3,wd6re_isrB2);
 VNH5019MD g_md_B3(40,41,46,38,39,A6,&OCR5A,2,wd6re_isrB3);
 
 WD6RE g_wd6re_J1={0};
@@ -21,10 +21,10 @@ WD6RE g_wd6re_B2={0};
 WD6RE g_wd6re_B3={0};
 
 WD6MD g_wd6mdJ1={0};
-WD6MD g_wd6mdB1={0};
 WD6MD g_wd6mdJ2={0};
-WD6MD g_wd6mdB2={0};
 WD6MD g_wd6mdJ3={0};
+WD6MD g_wd6mdB1={0};
+WD6MD g_wd6mdB2={0};
 WD6MD g_wd6mdB3={0};
 
 //general

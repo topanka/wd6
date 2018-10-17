@@ -1,5 +1,3 @@
-//#include "wd6md.h"
-
 int wd6md_setup(void)
 {
   g_wd6mdJ1.name="J1";

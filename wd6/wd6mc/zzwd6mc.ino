@@ -21,6 +21,8 @@ void setup()
   g_md_J1.init();
   g_md_J2.init();
   g_md_J3.init();
+  g_md_B1.init();
+  g_md_B2.init();
   g_md_B3.init();
   vnh5019_initTimers();
   
@@ -37,8 +39,11 @@ void loop()
   g_millis=millis();
   loop_counter();
   
+  wd6re_loop();
+  
 //  temp_read();
 
+  wd6md_setrpm(&g_wd6mdJ2,4);
   wd6md_setrpm(&g_wd6mdJ3,3);
   wd6md_setrpm(&g_wd6mdB3,7);
 

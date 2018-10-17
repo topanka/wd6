@@ -110,8 +110,36 @@ uint16_t qe_rpm_tbi(WD6RE *wd6re)
   return(wd6re->l_rpm);
 }
 
+int wd6re_readrpm(WD6RE *wd6re)
+{
+  wd6re->rpm=qe_rpm_tbi(wd6re);
+  if(wd6re->rpm != wd6re->rpmo) {
+    
+    Serial.print(g_millis);
+    Serial.print(" rpm=");
+    Serial.print(wd6re->rpm);
+    Serial.print(" ");
+    Serial.println(wd6re->rpm);
+    
+    wd6re->rpmo=wd6re->rpm;
+  }
+  if(wd6re->ico != wd6re->ic) {
+    wd6re->ico=wd6re->ic;
+  }
+
+  return(0);
+}
+
 void wd6re_loop()
 {
+  wd6re_readrpm(&g_wd6re_J1);
+  wd6re_readrpm(&g_wd6re_J2);
+  wd6re_readrpm(&g_wd6re_J3);
+  wd6re_readrpm(&g_wd6re_B1);
+  wd6re_readrpm(&g_wd6re_B2);
+  wd6re_readrpm(&g_wd6re_B3);
+  
+/*  
   g_wd6re_B3.rpm=qe_rpm_tbi(&g_wd6re_B3);
   if(g_wd6re_B3.rpm != g_wd6re_B3.rpmo) {
     
@@ -123,9 +151,7 @@ void wd6re_loop()
     
     g_wd6re_B3.rpmo=g_wd6re_B3.rpm;
   }
-
   if(g_wd6re_B3.ico != g_wd6re_B3.ic) {
-//    Serial.println(g_wd6re_ic1);
     g_wd6re_B3.ico=g_wd6re_B3.ic;
   }
 
@@ -140,12 +166,11 @@ void wd6re_loop()
     
     g_wd6re_J3.rpmo=g_wd6re_J3.rpm;
   }
-
   if(g_wd6re_J3.ico != g_wd6re_J3.ic) {
 //    Serial.println(g_wd6re_ic1);
     g_wd6re_J3.ico=g_wd6re_J3.ic;
   }
-
+*/
   
 }
 
