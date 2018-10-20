@@ -1,34 +1,34 @@
 int wd6md_setup(void)
 {
-  g_wd6mdJ1.name="J1";
-  g_wd6mdJ1.md=&g_md_J1;
-  g_wd6mdJ1.re=&g_wd6re_J1;
-  tmr_init(&g_wd6mdJ1.tmr_rpm,100);
+  g_wd6md_J1.name="J1";
+  g_wd6md_J1.md=&g_md_J1;
+  g_wd6md_J1.re=&g_wd6re_J1;
+  tmr_init(&g_wd6md_J1.tmr_rpm,100);
   
-  g_wd6mdJ2.name="J2";
-  g_wd6mdJ2.md=&g_md_J2;
-  g_wd6mdJ2.re=&g_wd6re_J2;
-  tmr_init(&g_wd6mdJ2.tmr_rpm,100);
+  g_wd6md_J2.name="J2";
+  g_wd6md_J2.md=&g_md_J2;
+  g_wd6md_J2.re=&g_wd6re_J2;
+  tmr_init(&g_wd6md_J2.tmr_rpm,100);
   
-  g_wd6mdJ3.name="J3";
-  g_wd6mdJ3.md=&g_md_J3;
-  g_wd6mdJ3.re=&g_wd6re_J3;
-  tmr_init(&g_wd6mdJ3.tmr_rpm,100);
+  g_wd6md_J3.name="J3";
+  g_wd6md_J3.md=&g_md_J3;
+  g_wd6md_J3.re=&g_wd6re_J3;
+  tmr_init(&g_wd6md_J3.tmr_rpm,100);
 
-  g_wd6mdB1.name="B1";
-  g_wd6mdB1.md=&g_md_B1;
-  g_wd6mdB1.re=&g_wd6re_B1;
-  tmr_init(&g_wd6mdB1.tmr_rpm,100);
+  g_wd6md_B1.name="B1";
+  g_wd6md_B1.md=&g_md_B1;
+  g_wd6md_B1.re=&g_wd6re_B1;
+  tmr_init(&g_wd6md_B1.tmr_rpm,100);
   
-  g_wd6mdB2.name="B2";
-  g_wd6mdB2.md=&g_md_B2;
-  g_wd6mdB2.re=&g_wd6re_B2;
-  tmr_init(&g_wd6mdB2.tmr_rpm,100);
+  g_wd6md_B2.name="B2";
+  g_wd6md_B2.md=&g_md_B2;
+  g_wd6md_B2.re=&g_wd6re_B2;
+  tmr_init(&g_wd6md_B2.tmr_rpm,100);
   
-  g_wd6mdB3.name="B3";
-  g_wd6mdB3.md=&g_md_B3;
-  g_wd6mdB3.re=&g_wd6re_B3;
-  tmr_init(&g_wd6mdB3.tmr_rpm,100);
+  g_wd6md_B3.name="B3";
+  g_wd6md_B3.md=&g_md_B3;
+  g_wd6md_B3.re=&g_wd6re_B3;
+  tmr_init(&g_wd6md_B3.tmr_rpm,100);
   
   return(0);
 }

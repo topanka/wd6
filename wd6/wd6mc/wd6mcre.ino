@@ -4,18 +4,18 @@
 
 void wd6re_setup() {
   // put your setup code here, to run once:
-  g_wd6re_J1.g_wd6re_tbi=1;
-  g_wd6re_J2.g_wd6re_tbi=1;
-  g_wd6re_J3.g_wd6re_tbi=1;
-  g_wd6re_B1.g_wd6re_tbi=1;
-  g_wd6re_B2.g_wd6re_tbi=1;
-  g_wd6re_B3.g_wd6re_tbi=1;
-  g_wd6re_J1.g_wd6re_num_tbi=WD6RE_TBI_NUM;
-  g_wd6re_J2.g_wd6re_num_tbi=WD6RE_TBI_NUM;
-  g_wd6re_J3.g_wd6re_num_tbi=WD6RE_TBI_NUM;
-  g_wd6re_B1.g_wd6re_num_tbi=WD6RE_TBI_NUM;
-  g_wd6re_B2.g_wd6re_num_tbi=WD6RE_TBI_NUM;
-  g_wd6re_B3.g_wd6re_num_tbi=WD6RE_TBI_NUM;
+  g_wd6re_J1.tbi=1;
+  g_wd6re_J2.tbi=1;
+  g_wd6re_J3.tbi=1;
+  g_wd6re_B1.tbi=1;
+  g_wd6re_B2.tbi=1;
+  g_wd6re_B3.tbi=1;
+  g_wd6re_J1.num_tbi=WD6RE_TBI_NUM;
+  g_wd6re_J2.num_tbi=WD6RE_TBI_NUM;
+  g_wd6re_J3.num_tbi=WD6RE_TBI_NUM;
+  g_wd6re_B1.num_tbi=WD6RE_TBI_NUM;
+  g_wd6re_B2.num_tbi=WD6RE_TBI_NUM;
+  g_wd6re_B3.num_tbi=WD6RE_TBI_NUM;
 }
 
 uint16_t qe_rpm_tbi(WD6RE *wd6re)
@@ -46,7 +46,7 @@ uint16_t qe_rpm_tbi(WD6RE *wd6re)
     wd6re->l_t0=g_millis;
     wd6re->l_r0=wd6re->ic;
     noInterrupts();
-    tbi=wd6re->g_wd6re_tbi;
+    tbi=wd6re->tbi;
     interrupts();
   }
 
@@ -71,16 +71,16 @@ uint16_t qe_rpm_tbi(WD6RE *wd6re)
   wd6re->l_sum+=tbi;
   
   wd6re->l_idx++;
-  wd6re->l_idx%=wd6re->g_wd6re_num_tbi;
+  wd6re->l_idx%=wd6re->num_tbi;
   if(wd6re->l_tbi[0] == 0) {
     if(wd6re->l_idx == 0) {
-      atbi=wd6re->l_sum/wd6re->g_wd6re_num_tbi;
+      atbi=wd6re->l_sum/wd6re->num_tbi;
     } else {
       atbi=wd6re->l_sum/wd6re->l_idx;
     }
   } else {
     wd6re->l_sum-=wd6re->l_tbi[wd6re->l_idx];
-    atbi=wd6re->l_sum/wd6re->g_wd6re_num_tbi;
+    atbi=wd6re->l_sum/wd6re->num_tbi;
   }
   wd6re->l_tbi[wd6re->l_idx]=tbi;
 
@@ -110,17 +110,20 @@ uint16_t qe_rpm_tbi(WD6RE *wd6re)
   return(wd6re->l_rpm);
 }
 
-int wd6re_readrpm(WD6RE *wd6re)
+int wd6re_readrpm(WD6MD *wd6md)
 {
+  WD6RE *wd6re;
+
+  wd6re=wd6md->re;
   wd6re->rpm=qe_rpm_tbi(wd6re);
   if(wd6re->rpm != wd6re->rpmo) {
-    
+/*    
     Serial.print(g_millis);
     Serial.print(" rpm=");
-    Serial.print(wd6re->rpm);
+    Serial.print(wd6re->rpmo);
     Serial.print(" ");
     Serial.println(wd6re->rpm);
-    
+*/    
     wd6re->rpmo=wd6re->rpm;
   }
   if(wd6re->ico != wd6re->ic) {
@@ -132,12 +135,12 @@ int wd6re_readrpm(WD6RE *wd6re)
 
 void wd6re_loop()
 {
-  wd6re_readrpm(&g_wd6re_J1);
-  wd6re_readrpm(&g_wd6re_J2);
-  wd6re_readrpm(&g_wd6re_J3);
-  wd6re_readrpm(&g_wd6re_B1);
-  wd6re_readrpm(&g_wd6re_B2);
-  wd6re_readrpm(&g_wd6re_B3);
+  wd6re_readrpm(&g_wd6md_J1);
+  wd6re_readrpm(&g_wd6md_J2);
+  wd6re_readrpm(&g_wd6md_J3);
+  wd6re_readrpm(&g_wd6md_B1);
+  wd6re_readrpm(&g_wd6md_B2);
+  wd6re_readrpm(&g_wd6md_B3);
   
 /*  
   g_wd6re_B3.rpm=qe_rpm_tbi(&g_wd6re_B3);
@@ -181,7 +184,7 @@ void wd6re_isrJ1(void)
   
   g_wd6re_J1.ic++;
   mm=micros();
-  g_wd6re_J1.g_wd6re_tbi=mm-l_t0;
+  g_wd6re_J1.tbi=mm-l_t0;
   l_t0=mm;
 }
 
@@ -192,7 +195,7 @@ void wd6re_isrJ2(void)
   
   g_wd6re_J2.ic++;
   mm=micros();
-  g_wd6re_J2.g_wd6re_tbi=mm-l_t0;
+  g_wd6re_J2.tbi=mm-l_t0;
   l_t0=mm;
 }
 
@@ -203,7 +206,7 @@ void wd6re_isrJ3(void)
   
   g_wd6re_J3.ic++;
   mm=micros();
-  g_wd6re_J3.g_wd6re_tbi=mm-l_t0;
+  g_wd6re_J3.tbi=mm-l_t0;
   l_t0=mm;
 }
 
@@ -214,7 +217,7 @@ void wd6re_isrB1(void)
   
   g_wd6re_B1.ic++;
   mm=micros();
-  g_wd6re_B1.g_wd6re_tbi=mm-l_t0;
+  g_wd6re_B1.tbi=mm-l_t0;
   l_t0=mm;
 }
 
@@ -225,7 +228,7 @@ void wd6re_isrB2(void)
   
   g_wd6re_B2.ic++;
   mm=micros();
-  g_wd6re_B2.g_wd6re_tbi=mm-l_t0;
+  g_wd6re_B2.tbi=mm-l_t0;
   l_t0=mm;
 }
 
@@ -236,6 +239,6 @@ void wd6re_isrB3(void)
   
   g_wd6re_B3.ic++;
   mm=micros();
-  g_wd6re_B3.g_wd6re_tbi=mm-l_t0;
+  g_wd6re_B3.tbi=mm-l_t0;
   l_t0=mm;
 }

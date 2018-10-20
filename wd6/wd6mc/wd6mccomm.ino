@@ -41,12 +41,12 @@ int tscr_comm_packtscr(uint16_t *len)
 
   wd6md_comm_pack1((byte*)&lead,sizeof(lead),g_wmd_commbuf,len);      //1:1
   wd6md_comm_pack1((byte*)&g_loop_cps,sizeof(g_loop_cps),g_wmd_commbuf,len);    //4:5
-  wd6md_comm_pack1((byte*)&g_wd6mdJ1.re->rpm,sizeof(uint16_t),g_wmd_commbuf,len);    //2:7
-  wd6md_comm_pack1((byte*)&g_wd6mdJ2.re->rpm,sizeof(uint16_t),g_wmd_commbuf,len);    //2:9
-  wd6md_comm_pack1((byte*)&g_wd6mdJ3.re->rpm,sizeof(uint16_t),g_wmd_commbuf,len);    //2:11
-  wd6md_comm_pack1((byte*)&g_wd6mdB1.re->rpm,sizeof(uint16_t),g_wmd_commbuf,len);    //2:13
-  wd6md_comm_pack1((byte*)&g_wd6mdB2.re->rpm,sizeof(uint16_t),g_wmd_commbuf,len);    //2:15
-  wd6md_comm_pack1((byte*)&g_wd6mdB3.re->rpm,sizeof(uint16_t),g_wmd_commbuf,len);    //2:17
+  wd6md_comm_pack1((byte*)&g_wd6md_J1.re->rpm,sizeof(uint16_t),g_wmd_commbuf,len);    //2:7
+  wd6md_comm_pack1((byte*)&g_wd6md_J2.re->rpm,sizeof(uint16_t),g_wmd_commbuf,len);    //2:9
+  wd6md_comm_pack1((byte*)&g_wd6md_J3.re->rpm,sizeof(uint16_t),g_wmd_commbuf,len);    //2:11
+  wd6md_comm_pack1((byte*)&g_wd6md_B1.re->rpm,sizeof(uint16_t),g_wmd_commbuf,len);    //2:13
+  wd6md_comm_pack1((byte*)&g_wd6md_B2.re->rpm,sizeof(uint16_t),g_wmd_commbuf,len);    //2:15
+  wd6md_comm_pack1((byte*)&g_wd6md_B3.re->rpm,sizeof(uint16_t),g_wmd_commbuf,len);    //2:17
   crc8=getCRC(g_wmd_commbuf,*len);
   wd6md_comm_pack1((byte*)&crc8,sizeof(crc8),g_wmd_commbuf,len);    //1:18
   

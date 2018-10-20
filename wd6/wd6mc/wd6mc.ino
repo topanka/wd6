@@ -20,12 +20,12 @@ WD6RE g_wd6re_B1={0};
 WD6RE g_wd6re_B2={0};
 WD6RE g_wd6re_B3={0};
 
-WD6MD g_wd6mdJ1={0};
-WD6MD g_wd6mdJ2={0};
-WD6MD g_wd6mdJ3={0};
-WD6MD g_wd6mdB1={0};
-WD6MD g_wd6mdB2={0};
-WD6MD g_wd6mdB3={0};
+WD6MD g_wd6md_J1={0};
+WD6MD g_wd6md_J2={0};
+WD6MD g_wd6md_J3={0};
+WD6MD g_wd6md_B1={0};
+WD6MD g_wd6md_B2={0};
+WD6MD g_wd6md_B3={0};
 
 //general
 unsigned long g_millis=0;
