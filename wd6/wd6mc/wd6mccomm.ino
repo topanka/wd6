@@ -13,7 +13,7 @@ int comm_setup(void)
   Serial2.begin(500000);
   buildCRCTable();
 //  tmr_init(&g_tmr_comm,250);
-  tmr_init(&g_tmr_comm,200);
+  tmr_init(&g_tmr_comm,125);
 }
 
 int wd6md_comm_pack1(byte *d, uint16_t l, byte *buf, uint16_t *len)
@@ -134,10 +134,11 @@ int comm_read(int *state, unsigned char *buf, unsigned int *len)
 */  
         crc8=getCRC(buf,*len);
         
-/*        
-        xx++;
-  Serial.print(xx);
-  Serial.print(" ");
+        
+//        xx++;
+//  Serial.print(xx);
+/*
+  Serial.print("crc= ");
   Serial.print(c1);
   Serial.print(" ");
   Serial.println(crc8);
@@ -206,6 +207,10 @@ int comm_recv(void)
   ret=comm_read(&g_rmd_state,g_rmd_commbuf,&g_rmd_len);
   
   if(ret == WD6CUMC_PST_READY) {
+
+
+//Serial.println("read from central");
+    
     comm_unpackcu(g_rmd_commbuf,g_rmd_len,
                   &g_wcu_commpkt_counter,
                   &g_cb_battV,

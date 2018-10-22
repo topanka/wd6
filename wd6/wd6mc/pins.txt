@@ -1,0 +1,27 @@
+J1				B1
+Analog: A1                      A3			white
+PWM: D6 timer4 OCR4A            D4 PL5 OCR5C		green
+D42 PL7                         D30 PC7 (A15)		yellow
+D43 PL6                         D31 PC6 (A14)           yellow
+D47 PL2 (T5)                    D32 PC5 (A13)           blue
+D48 PL1 (ICP5)                  D33 PC4 (A12)           blue
+INT: D2 INT.0                   D19 INT.4		blue pvc
+
+J2                              B2
+Analog: A2                      A5                      white    
+PWM: D7 timer4 OCR4B            D45 PL4 OCR5B           green    
+D22                             D34 PC3 (A11)           yellow   
+D23                             D35 PC2 (A10)           yellow   
+D24                             D36 PC1 (A9)            blue     
+D25                             D37 PC0 (A8)            blue     
+INT: D3 INT.1                   D20 INT.3 (SDA)         blue pvc 
+
+J3                              B3
+Analog: A3                      A6                      white    
+PWM: D8 timer4 OCR4C            D46 PL3 OCR5A           green    
+D26				D38 PD7 (T0)            yellow   INA
+D27                             D39 PG2 (ALE)           yellow   INB
+D28 PA6 (AD6)                   D40 PG1 (RD)            blue     ENA/DIAGA
+D29 PA7 (AD7)                   D41 PG0 (WR)            blue     ENB/DIAGB
+INT: D18 INT.5                  D21 INT.2 (SCL)         blue pvc 
+

@@ -133,8 +133,13 @@ unsigned int VNH5019MD::getCurrentMilliamps()
   return analogRead(_CS) * 34;
 }
 
-// Return error status for motor 1 
-unsigned char VNH5019MD::getFault()
+// Return error status for half bridge 1 
+unsigned char VNH5019MD::getFaultH1()
 {
   return !digitalRead(_EN1DIAG);
+}
+// Return error status for half bridge 2 
+unsigned char VNH5019MD::getFaultH2()
+{
+  return !digitalRead(_EN2DIAG);
 }

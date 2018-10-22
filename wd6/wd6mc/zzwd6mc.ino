@@ -1,9 +1,16 @@
+//MAX RPM 65
+
 void loop_counter(void)
 {
+  g_millis=millis();
   g_loop_cnt++;
   if((g_millis-g_loop_ct) > 1000) {
+    
     Serial.print("loopcps ");
     Serial.println(g_loop_cps);
+    Serial.print("fsY ");
+    Serial.println(g_cb_fsY);
+    
     g_loop_cps=g_loop_cnt;
     g_loop_cnt=0;
     g_loop_ct=g_millis;
@@ -38,7 +45,6 @@ void setup()
 
 void loop()
 {
-  g_millis=millis();
   loop_counter();
   
   wd6re_loop();
@@ -46,7 +52,8 @@ void loop()
 //  temp_read();
 
   wd6md_setrpm(&g_wd6md_J2,4);
-  wd6md_setrpm(&g_wd6md_J3,3);
+  wd6md_setrpm(&g_wd6md_J3,5);
+  wd6md_setrpm(&g_wd6md_B2,6);
   wd6md_setrpm(&g_wd6md_B3,7);
 
   wd6cumd_comm();

@@ -27,7 +27,8 @@ class VNH5019MD
     int getSpeed(void); // Get speed.
     void setBrake(int brake); // Brake. 
     unsigned int getCurrentMilliamps(); // Get current reading. 
-    unsigned char getFault(); // Get fault reading.
+    unsigned char getFaultH1(); // Get fault reading.
+    unsigned char getFaultH2(); // Get fault reading.
     
   private:
     unsigned char _INA;

@@ -39,7 +39,7 @@ int wd6md_setrpm(WD6MD *wd6md, int rpm)
   if(wd6md->re->rpm == rpm) return(0);
   if(wd6md->re->rpm < rpm) {
     wd6md->md->incSpeed(1);
-    
+/*    
 Serial.print(wd6md->name);
 Serial.print("+");
 Serial.print(g_millis);
@@ -47,9 +47,9 @@ Serial.print(" ");
 Serial.print(wd6md->re->rpm);
 Serial.print(" ");
 Serial.println(wd6md->md->getSpeed());
-
+*/
   } else {
-    
+/*    
 Serial.print(wd6md->name);
 Serial.print("-");
 Serial.print(g_millis);
@@ -57,7 +57,7 @@ Serial.print(" ");
 Serial.print(wd6md->re->rpm);
 Serial.print(" ");
 Serial.println(wd6md->md->getSpeed());
-
+*/
     wd6md->md->incSpeed(-1);
   }
 

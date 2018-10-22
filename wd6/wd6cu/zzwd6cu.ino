@@ -19,9 +19,10 @@ void setup()
 //  servo_setup();
   light_setup();
   temp_setup();
+  cumc_comm_setup();
   
   Serial.begin(115200);
-  
+ 
   delay(2000);
   g_loop_ct=millis();
 }
@@ -33,8 +34,8 @@ void loop()
   
   batt_read(&g_battV,&g_battA);
   temp_read();
-  comm_send();
-  comm_recv();
+  bxcu_comm();
   eval_doit();
+  cumc_comm();
 
 }

@@ -8,7 +8,7 @@ byte g_rmc_commbuf[100]={0};
 int g_rmc_state=WD6CUMC_PST_INIT;
 unsigned int g_rmc_len=0;
 
-int cumc_setup(void)
+int cumc_comm_setup(void)
 {
   Serial1.begin(500000);    //wd6 motor controller
   return(0);
@@ -22,7 +22,7 @@ int cumc_comm_pack1(byte *d, uint16_t l, byte *buf, uint16_t *len)
   return(0);
 }
 
-int cumc_comm_packuccb(int fsBE, int b6pBE, uint16_t *len)
+int cumc_comm_packuccb(int16_t fsBE, int16_t b6pBE, uint16_t *len)
 {
   byte lead=WD6CUMC_CU_LEAD;
   byte crc8;
@@ -65,8 +65,8 @@ int cumc_comm_packuccb(int fsBE, int b6pBE, uint16_t *len)
 int cumc_comm_send(void)
 {
   uint16_t len;
-  static int l_b6pBE=0;
-  static int l_fsBE=0;
+  static int16_t l_b6pBE=0;
+  static int16_t l_fsBE=0;
 
   g_wmc_commpkt_counter++;
   
@@ -76,7 +76,10 @@ int cumc_comm_send(void)
   if((g_millis < g_wmc_sendtime+50) &&
      (l_b6pBE == 0) &&
      (l_fsBE == 0)) return(0);
-
+/*
+Serial.print("write to motor");
+Serial.println(g_cb_fsY);
+*/
   g_wmc_sendtime=g_millis;
   cumc_comm_packuccb(l_fsBE,l_b6pBE,&len);
   Serial1.write((byte*)&g_wmc_commbuf[0],len);
@@ -180,10 +183,10 @@ int cumc_comm_unpackuccb(unsigned char *buf, unsigned int len,
   l=1;
   cumc_comm_unpack1((unsigned char *)loop_cps,sizeof(unsigned long),buf,&l);
   cumc_comm_unpack1((unsigned char *)J1rpm,sizeof(int16_t),buf,&l);
-  cumc_comm_unpack1((unsigned char *)B1rpm,sizeof(int16_t),buf,&l);
   cumc_comm_unpack1((unsigned char *)J2rpm,sizeof(int16_t),buf,&l);
-  cumc_comm_unpack1((unsigned char *)B2rpm,sizeof(int16_t),buf,&l);
   cumc_comm_unpack1((unsigned char *)J3rpm,sizeof(int16_t),buf,&l);
+  cumc_comm_unpack1((unsigned char *)B1rpm,sizeof(int16_t),buf,&l);
+  cumc_comm_unpack1((unsigned char *)B2rpm,sizeof(int16_t),buf,&l);
   cumc_comm_unpack1((unsigned char *)B3rpm,sizeof(int16_t),buf,&l);
 
   return(0);
@@ -201,12 +204,17 @@ int cumc_comm_recv(void)
     cumc_comm_unpackuccb(g_rmc_commbuf,g_rmc_len,
                     &g_mc_loopcps,
                     &g_mc_J1rpm,
-                    &g_mc_B1rpm,
                     &g_mc_J2rpm,
-                    &g_mc_B2rpm,
                     &g_mc_J3rpm,
+                    &g_mc_B1rpm,
+                    &g_mc_B2rpm,
                     &g_mc_B3rpm
                     );
+
+Serial.print(g_mc_J3rpm);
+Serial.print(" ");
+Serial.println(g_mc_B3rpm);
+                    
 
 /*
                     Serial.print(g_tscr_power);

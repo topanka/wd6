@@ -272,10 +272,22 @@ int comm_recv(void)
     if((int)(stb&UCCB_ST_M1) == 0) g_cb_m1s=0;
     if((int)(stb&UCCB_ST_M2) == 0) g_cb_m2s=0;
     g_cb_lightpos=(int)((stb&UCCB_ST_POSLIGHT)>>UCCB_PL_STPOS);
+
+/*
+Serial.print("fsY=");
+Serial.println(g_cb_fsY);
+*/    
     
     g_recv_ready=1;
     return(1);
   }
+
+  return(0);
+}
+int bxcu_comm(void)
+{
+  comm_send();
+  comm_recv();
 
   return(0);
 }
