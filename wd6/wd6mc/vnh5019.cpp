@@ -75,7 +75,7 @@ void VNH5019MD::init()
 // Set speed for motor 1, speed is a number betwenn -400 and 400
 void VNH5019MD::setSpeed(int speed)
 {
-  unsigned char reverse = 0;
+  unsigned char reverse=0;
 
   if(speed < 0) {
     speed=-speed;  // Make speed a positive quantity
@@ -96,13 +96,27 @@ void VNH5019MD::setSpeed(int speed)
   }
 }
 
-void VNH5019MD::incSpeed(int step)
+void VNH5019MD::incSpeed(int step, int dir)
 {
   int speed;
 
-  if(_speed >= 0) speed=_speed+step;
-  else speed=_speed-step;
+//Serial.print("speed=");
+//Serial.println(_speed);
 
+  if(_speed >= 0) {
+    if(step >= 0) {
+      speed=_speed+step;
+    } else {
+      if(-step <= _speed) {
+        speed=_speed+step;
+      }
+    }
+  }
+
+  if(dir < 0) {
+    speed=-speed;
+  }
+  
   setSpeed(speed);
 }
 

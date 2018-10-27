@@ -23,7 +23,7 @@ class VNH5019MD
     // PUBLIC METHODS
     void init(); // Initialize TIMER, set the PWM to 20kHZ. 
     void setSpeed(int speed); // Set speed.
-    void incSpeed(int step); // Increment speed.
+    void incSpeed(int step, int dir); // Increment speed.
     int getSpeed(void); // Get speed.
     void setBrake(int brake); // Brake. 
     unsigned int getCurrentMilliamps(); // Get current reading. 

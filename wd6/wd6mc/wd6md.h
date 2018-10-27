@@ -2,11 +2,13 @@
 #define __WD6MD_H_INCLUDED__
 
 #include "sh1tmr.h"
+#include "ResponsiveAnalogRead.h"
 
 typedef struct tagWD6MD {
   const char *name;
   VNH5019MD *md;
   WD6RE *re;
+  ResponsiveAnalogRead *curr;
   MYTMR tmr_rpm;
 } WD6MD;
 

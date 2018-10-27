@@ -87,12 +87,14 @@ int comm_read(int *state, unsigned char *buf, unsigned int *len)
     switch(*state) {
       case WD6CUMC_PST_INIT:
       case WD6CUMC_PST_READY:
+
 /*      
   Serial.print(*len);
   Serial.print(" ");
   Serial.print(c1);
   Serial.println(" init/ready");
 */  
+  
         if(c1 == WD6CUMC_CU_LEAD) {
           *len=0;
           buf[*len]=c1;
