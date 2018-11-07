@@ -38,44 +38,33 @@ VNH5019MD::VNH5019MD(unsigned char INA, unsigned char INB, unsigned char PWM, un
   _REINT=REINT;
   _ISR_F=isr_f;
   _speed=0;
+  _prev_speed=0;
 }
 
 // Public Methods //////////////////////////////////////////////////////////////
-void VNH5019MD::init()
+void VNH5019MD::init(int ena)
 {
 // Define pinMode for the pins and set the frequency for timer1.
 
   pinMode(_INA,OUTPUT);
   pinMode(_INB,OUTPUT);
   pinMode(_PWM,OUTPUT);
-  pinMode(_EN1DIAG,INPUT_PULLUP);
-  pinMode(_EN2DIAG,INPUT_PULLUP);
+//  pinMode(_EN1DIAG,INPUT_PULLUP);
+//  pinMode(_EN2DIAG,INPUT_PULLUP);
+  if(ena == 0) {
+    disable();
+  } else {
+    enable();
+  }
   pinMode(_CS,INPUT);
   attachInterrupt(_REINT,_ISR_F,CHANGE);
-
-/*  
-  #if defined(__AVR_ATmega168__)|| defined(__AVR_ATmega328P__)
-  TCCR1A = 0b10100000; 
-  TCCR1B = 0b00010001; 
-  ICR1 = 400;
-  #endif
-  #if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-  // Mega board specific stuff here - assumes assigning timer3, using pins 3 &5
-  TCCR1A = 0b10100000; // Mega pin 5
-  TCCR1B = 0b00010001; // Mega pin 3
-  ICR1 = 400;
-  #endif  
-*/  
-/*
-  TCCR1A = 0b10100000;
-  TCCR1B = 0b00010001;
-  ICR1 = 400;
-*/  
 }
 // Set speed for motor 1, speed is a number betwenn -400 and 400
 void VNH5019MD::setSpeed(int speed)
 {
   unsigned char reverse=0;
+
+  if(_prev_speed == speed) return;
 
   if(speed < 0) {
     speed=-speed;  // Make speed a positive quantity
@@ -94,6 +83,7 @@ void VNH5019MD::setSpeed(int speed)
     digitalWrite(_INB,LOW);
     _speed=speed;
   }
+  _prev_speed=_speed;
 }
 
 void VNH5019MD::incSpeed(int step, int dir)
@@ -103,14 +93,39 @@ void VNH5019MD::incSpeed(int step, int dir)
 //Serial.print("speed=");
 //Serial.println(_speed);
 
+/*
   if(_speed >= 0) {
     if(step >= 0) {
       speed=_speed+step;
     } else {
       if(-step <= _speed) {
         speed=_speed+step;
+      } else {
+        speed=0;
       }
     }
+  } else {
+    if(step >= 0) {
+      speed=_speed-step;
+    } else {
+      if(step > _speed) {
+        speed=_speed-step;
+      } else {
+        speed=0;
+      }
+    }
+  }
+*/  
+  if(_speed >= 0) {
+    speed=_speed+step;
+    if(speed < 0) speed=0;
+  } else {
+    speed=_speed-step;
+    if(speed > 0) speed=0;
+    speed=-speed;
+  }
+  if((step > 0) && (speed < 60)) {
+    speed=60;
   }
 
   if(dir < 0) {
@@ -150,10 +165,42 @@ unsigned int VNH5019MD::getCurrentMilliamps()
 // Return error status for half bridge 1 
 unsigned char VNH5019MD::getFaultH1()
 {
+  if(_enabledH1 == 0) return(0xFB);
   return !digitalRead(_EN1DIAG);
 }
 // Return error status for half bridge 2 
 unsigned char VNH5019MD::getFaultH2()
 {
+  if(_enabledH2 == 0) return(0xFB);
   return !digitalRead(_EN2DIAG);
+}
+void VNH5019MD::enableH1()
+{
+  pinMode(_EN1DIAG,INPUT_PULLUP);
+  _enabledH1=1;
+}
+void VNH5019MD::enableH2()
+{
+  pinMode(_EN2DIAG,INPUT_PULLUP);
+  _enabledH2=1;
+}
+void VNH5019MD::enable()
+{
+  VNH5019MD::enableH1();
+  VNH5019MD::enableH2();
+}
+void VNH5019MD::disableH1()
+{
+  pinMode(_EN1DIAG,OUTPUT);
+  _enabledH1=0;
+}
+void VNH5019MD::disableH2()
+{
+  pinMode(_EN2DIAG,OUTPUT);
+  _enabledH2=0;
+}
+void VNH5019MD::disable()
+{
+  VNH5019MD::disableH1();
+  VNH5019MD::disableH2();
 }

@@ -1,5 +1,10 @@
 //MAX RPM 65
 
+void switchled(void)
+{
+  
+}
+
 void loop_counter(void)
 {
   g_millis=millis();
@@ -20,7 +25,9 @@ void loop_counter(void)
     Serial.print(g_wd6md_J2.curr->getRawValue());
     Serial.print("\t");
     Serial.println(g_wd6md_J2.curr->getValue());    
-    
+
+    g_force_send=1;
+    comm_send();
     
     g_loop_cps=g_loop_cnt;
     g_loop_cnt=0;
@@ -30,16 +37,24 @@ void loop_counter(void)
 
 void setup()
 {
+
   delay(1000);
+  
+pinMode(LED_BUILTIN, OUTPUT);
+digitalWrite(LED_BUILTIN, HIGH);
+
   smar_setup();
+//digitalWrite(LED_BUILTIN, HIGH);
 //  batt_setup();
 //  md_setup();
   comm_setup();
   
   Serial.begin(115200);
 
-  g_md_J1.init();
-  g_md_J2.init();
+//digitalWrite(LED_BUILTIN, HIGH);
+  
+  g_md_J1.init(0);
+  g_md_J2.init(0);
   g_md_J3.init();
   g_md_B1.init();
   g_md_B2.init();
@@ -56,7 +71,7 @@ void setup()
 
 void loop()
 {
-  int pwr,dir;
+  int rpm,dir;
   
   loop_counter();
   
@@ -65,21 +80,24 @@ void loop()
   
 //  temp_read();
 
-  pwr=0;
+  rpm=0;
   
-  if(g_cb_fsY > 530) {
-    pwr=map(g_cb_fsY,530,4,1024,65);
-    dir=1;
-  } else if(g_cb_fsY < 500) {
-    pwr=map(g_cb_fsY,0,65,500,4);
+  if((g_cb_fsY > 530) && (g_cb_fsY < 1024)) {
+    rpm=map(g_cb_fsY,530,1024,4,65);
     dir=-1;
+  } else if((g_cb_fsY < 500) && (g_cb_fsY >= 0)) {
+    rpm=map(g_cb_fsY,0,500,65,4);
+    dir=1;
   }
+
+//  Serial.print("rpm: ");
+//  Serial.println(rpm);
+
+//  pwr=7;
+//  dir=-1;
   
 
-  pwr=6;
-  dir=1;
-/*
-  if(pwr == 0) {
+  if(rpm == 0) {
     g_wd6md_J1.md->setSpeed(0);
     g_wd6md_J2.md->setSpeed(0);
     g_wd6md_J3.md->setSpeed(0);
@@ -87,14 +105,13 @@ void loop()
     g_wd6md_B2.md->setSpeed(0);
     g_wd6md_B3.md->setSpeed(0);
   } else {
-*/  
-    wd6md_setrpm(&g_wd6md_J1,pwr,dir);
-    wd6md_setrpm(&g_wd6md_J2,pwr,dir);
-    wd6md_setrpm(&g_wd6md_J3,pwr,dir);
-    wd6md_setrpm(&g_wd6md_B1,pwr,dir);
-    wd6md_setrpm(&g_wd6md_B2,pwr,dir);
-    wd6md_setrpm(&g_wd6md_B3,pwr,dir);
-//  }
+    wd6md_setrpm(&g_wd6md_J1,rpm,dir);
+    wd6md_setrpm(&g_wd6md_J2,rpm,dir);
+    wd6md_setrpm(&g_wd6md_J3,rpm,dir);
+    wd6md_setrpm(&g_wd6md_B1,rpm,dir);
+    wd6md_setrpm(&g_wd6md_B2,rpm,dir);
+    wd6md_setrpm(&g_wd6md_B3,rpm,dir);
+  }
 
   wd6cumd_comm();
 }

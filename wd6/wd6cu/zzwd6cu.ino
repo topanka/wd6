@@ -11,6 +11,7 @@ void loop_counter(void)
 void setup()
 {
   delay(1000);
+  analogReadResolution(10); 
   smar_setup();
   batt_setup();
 //  md_setup();

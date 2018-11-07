@@ -21,7 +21,7 @@ class VNH5019MD
               unsigned char CS, volatile uint16_t *OCR, int REINT, isr_ft isr_f); // User-defined pin selection. 
     
     // PUBLIC METHODS
-    void init(); // Initialize TIMER, set the PWM to 20kHZ. 
+    void init(int ena=1); // Initialize TIMER, set the PWM to 20kHZ. 
     void setSpeed(int speed); // Set speed.
     void incSpeed(int step, int dir); // Increment speed.
     int getSpeed(void); // Get speed.
@@ -29,6 +29,12 @@ class VNH5019MD
     unsigned int getCurrentMilliamps(); // Get current reading. 
     unsigned char getFaultH1(); // Get fault reading.
     unsigned char getFaultH2(); // Get fault reading.
+    void enableH1();
+    void enableH2();
+    void enable();
+    void disableH1();
+    void disableH2();
+    void disable();
     
   private:
     unsigned char _INA;
@@ -41,6 +47,9 @@ class VNH5019MD
     int _REINT;
     isr_ft _ISR_F;
     int _speed;
+    int _prev_speed;
+    unsigned char _enabledH1;
+    unsigned char _enabledH2;
 };
 
 int vnh5019_initTimers(void);

@@ -447,7 +447,8 @@ void dsp_scr_ship1(int force)
     if(g_sh1_battV < 0) {
       lcd.print("0.00");
     } else {
-      xx=(g_sh1_battV_a*g_sh1_battV+g_sh1_battV_b)/1000L;
+//      xx=(g_sh1_battV_a*g_sh1_battV+g_sh1_battV_b)/1000L;
+      xx=330L*g_sh1_battV/1024L;
       lcd.print(xx/100,10);
       lcd.print(".");
       xx%=100;

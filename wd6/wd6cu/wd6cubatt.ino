@@ -1,7 +1,7 @@
 int batt_setup(void)
 {
   int i,avn;
-  
+
   avn=7;
   smar_init(UCCB_BATTV_PORT,avn,5);
   

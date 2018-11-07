@@ -211,9 +211,9 @@ int cumc_comm_recv(void)
                     &g_mc_B3rpm
                     );
 
-Serial.print(g_mc_J3rpm);
-Serial.print(" ");
-Serial.println(g_mc_B3rpm);
+//Serial.print(g_mc_J3rpm);
+//Serial.print(" ");
+//Serial.println(g_mc_B3rpm);
                     
 
 /*

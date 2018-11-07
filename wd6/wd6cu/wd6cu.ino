@@ -9,8 +9,8 @@
 #define WD6CU_VERSION        "1.0.2"
 
 //battery
-#define UCCB_BATTV_PORT              A1
-#define UCCB_BATTA_PORT              A0
+#define UCCB_BATTV_PORT              A16
+#define UCCB_BATTA_PORT              A17
 int16_t g_battV=-1;
 int16_t g_battA=-1;
 
