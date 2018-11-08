@@ -66,3 +66,7 @@ int16_t g_cb_fsBE=-1;
 
 int16_t g_cb_b6pBS=-1;
 int16_t g_cb_b6pBE=-1;
+
+int16_t g_cb_m1s=0;
+int16_t g_cb_m2s=0;
+int16_t g_cb_rdd=0;

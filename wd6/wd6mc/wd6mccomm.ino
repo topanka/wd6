@@ -170,34 +170,40 @@ int comm_unpack1(unsigned char *d, unsigned int l, unsigned char *buf, unsigned 
 
 int comm_unpackcu(unsigned char *buf, unsigned long len, 
                   unsigned long *commpkt_counter,
-                  int *battV,
-                  int *tsX,
-                  int *tsY,
-                  int *fsX,
-                  int *fsY,
-                  int *fsZ,
-                  int *fsBS,
-                  int *fsBE,
-                  int *stb,
-                  int *b6pBS,
-                  int *b6pBE)
+                  int16_t *battV,
+                  int16_t *tsX,
+                  int16_t *tsY,
+                  int16_t *fsX,
+                  int16_t *fsY,
+                  int16_t *fsZ,
+                  int16_t *fsBS,
+                  int16_t *fsBE,
+                  int16_t *stb,
+                  int16_t *b6pBS,
+                  int16_t *b6pBE,
+                  int16_t *m1s,
+                  int16_t *m2s,
+                  int16_t *rdd)
 {
   unsigned int l;
   
   l=1;
 
   comm_unpack1((unsigned char *)commpkt_counter,sizeof(unsigned long),buf,&l);
-  comm_unpack1((unsigned char *)battV,sizeof(uint16_t),buf,&l);
-  comm_unpack1((unsigned char *)tsX,sizeof(uint16_t),buf,&l);
-  comm_unpack1((unsigned char *)tsY,sizeof(uint16_t),buf,&l);
-  comm_unpack1((unsigned char *)fsX,sizeof(uint16_t),buf,&l);
-  comm_unpack1((unsigned char *)fsY,sizeof(uint16_t),buf,&l);
-  comm_unpack1((unsigned char *)fsZ,sizeof(uint16_t),buf,&l);
-  comm_unpack1((unsigned char *)fsBS,sizeof(uint16_t),buf,&l);
-  comm_unpack1((unsigned char *)fsBE,sizeof(uint16_t),buf,&l);
-  comm_unpack1((unsigned char *)stb,sizeof(uint16_t),buf,&l);
-  comm_unpack1((unsigned char *)b6pBS,sizeof(uint16_t),buf,&l);
-  comm_unpack1((unsigned char *)b6pBE,sizeof(uint16_t),buf,&l);
+  comm_unpack1((unsigned char *)battV,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)tsX,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)tsY,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)fsX,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)fsY,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)fsZ,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)fsBS,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)fsBE,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)stb,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)b6pBS,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)b6pBE,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)m1s,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)m2s,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)rdd,sizeof(int16_t),buf,&l);
 
   return(0);
 }
@@ -225,7 +231,10 @@ int comm_recv(void)
                   &g_cb_fsBE,
                   &stb,
                   &g_cb_b6pBS,
-                  &g_cb_b6pBE);
+                  &g_cb_b6pBE,
+                  &g_cb_m1s,
+                  &g_cb_m2s,
+                  &g_cb_rdd);
   
     return(1);
   }

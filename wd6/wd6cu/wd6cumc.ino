@@ -49,6 +49,9 @@ int cumc_comm_packuccb(int16_t fsBE, int16_t b6pBE, uint16_t *len)
   cumc_comm_pack1((byte*)&stb,sizeof(stb),g_wmc_commbuf,len);    //2:23-4
   cumc_comm_pack1((byte*)&g_cb_b6pBS,sizeof(g_cb_b6pBS),g_wmc_commbuf,len);    //2:25-4
   cumc_comm_pack1((byte*)&b6pBE,sizeof(b6pBE),g_wmc_commbuf,len);    //2:27-8
+  cumc_comm_pack1((byte*)&g_cb_m1s,sizeof(g_cb_m1s),g_wmc_commbuf,len);    //2:29-1+9
+  cumc_comm_pack1((byte*)&g_cb_m2s,sizeof(g_cb_m2s),g_wmc_commbuf,len);    //2:31-1+9
+  cumc_comm_pack1((byte*)&g_cb_rdd,sizeof(g_cb_rdd),g_wmc_commbuf,len);    //2:33-1+7
   
   crc8=getCRC(g_wmc_commbuf,*len);
   
