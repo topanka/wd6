@@ -42,6 +42,7 @@ unsigned long g_loop_cps=0;         //loop counter per sec
 unsigned long g_loop_ct=0;
 
 MYTMR g_tmr_comm={0};
+MYTMR g_tmr_rmc={0};        //read motor current
 
 int g_force_send=0;
 

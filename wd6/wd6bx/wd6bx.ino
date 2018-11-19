@@ -170,11 +170,11 @@ unsigned char g_shiptobeready=0;
 //SH1
 
 //battery
-//y=ax+b; a=0.011548, b=-1.05552
+//y=ax+b; a=0.00975946, b=-0.153645
 int g_sh1_battV=-1;
-long g_sh1_battV_a=1155;
-long g_sh1_battV_b=-105552;
-//lipo discharch voltage 7.4V
+long g_sh1_battV_a=976;
+long g_sh1_battV_b=-15364;
+//lipo discharch voltage 7.0V
 int g_sh1_battV_min=733;
 
 //y=ax+b; a=0.0378846, b=-18.8018

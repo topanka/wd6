@@ -9,6 +9,7 @@ typedef struct tagWD6MD {
   VNH5019MD *md;
   WD6RE *re;
   ResponsiveAnalogRead *curr;
+  unsigned char overloaded;
   MYTMR tmr_rpm;
 } WD6MD;
 

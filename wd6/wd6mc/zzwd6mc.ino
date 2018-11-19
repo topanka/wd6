@@ -1,10 +1,5 @@
 //MAX RPM 65
 
-void switchled(void)
-{
-  
-}
-
 void loop_counter(void)
 {
   g_millis=millis();
@@ -25,6 +20,11 @@ void loop_counter(void)
     Serial.print(g_wd6md_J2.curr->getRawValue());
     Serial.print("\t");
     Serial.println(g_wd6md_J2.curr->getValue());    
+
+    Serial.print("m1s: ");
+    Serial.print(g_cb_m1s);
+    Serial.print(" m2s:");
+    Serial.println(g_cb_m2s);    
 
     g_force_send=1;
     comm_send();
@@ -53,8 +53,8 @@ digitalWrite(LED_BUILTIN, HIGH);
 
 //digitalWrite(LED_BUILTIN, HIGH);
   
-  g_md_J1.init(0);
-  g_md_J2.init(0);
+  g_md_J1.init();
+  g_md_J2.init();
   g_md_J3.init();
   g_md_B1.init();
   g_md_B2.init();
@@ -76,7 +76,7 @@ void loop()
   loop_counter();
   
   wd6re_loop();
-//  wd6md_readcurrent();
+  wd6md_readcurrent();
   
 //  temp_read();
 

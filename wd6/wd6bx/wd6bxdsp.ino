@@ -447,8 +447,7 @@ void dsp_scr_ship1(int force)
     if(g_sh1_battV < 0) {
       lcd.print("0.00");
     } else {
-//      xx=(g_sh1_battV_a*g_sh1_battV+g_sh1_battV_b)/1000L;
-      xx=330L*g_sh1_battV/1024L;
+      xx=(g_sh1_battV_a*g_sh1_battV+g_sh1_battV_b)/1000L;
       lcd.print(xx/100,10);
       lcd.print(".");
       xx%=100;
@@ -460,10 +459,14 @@ void dsp_scr_ship1(int force)
     lcd.print("V/");
     l_battV=g_sh1_battV;
     lcd.setCursor(11,1);
-    if(g_sh1_battA < 0) {
+    if(g_sh1_battA <= 0) {
       lcd.print("0.00");
     } else {
-      xx=(g_sh1_battA-512)*55.35;
+      xx=(172UL*33UL*(long)g_sh1_battA)/1023;
+      if(xx > 500) xx-=500;
+      else xx=0;
+      xx*=133;
+      xx/=1000;
       lcd.print(xx,10);
     }
     lcd.print("mA   ");

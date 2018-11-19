@@ -58,9 +58,9 @@ int cumc_comm_packuccb(int16_t fsBE, int16_t b6pBE, uint16_t *len)
 //Serial.print("crc8 ");  
 //Serial.println(crc8);  
   
-  cumc_comm_pack1((byte*)&crc8,sizeof(crc8),g_wmc_commbuf,len);    //1:28
+  cumc_comm_pack1((byte*)&crc8,sizeof(crc8),g_wmc_commbuf,len);    //1:34
   
-//28 byte long  
+//34 byte long  
   
   return(0);
 }
@@ -185,12 +185,12 @@ int cumc_comm_unpackuccb(unsigned char *buf, unsigned int len,
   
   l=1;
   cumc_comm_unpack1((unsigned char *)loop_cps,sizeof(unsigned long),buf,&l);
-  cumc_comm_unpack1((unsigned char *)J1rpm,sizeof(int16_t),buf,&l);
-  cumc_comm_unpack1((unsigned char *)J2rpm,sizeof(int16_t),buf,&l);
-  cumc_comm_unpack1((unsigned char *)J3rpm,sizeof(int16_t),buf,&l);
-  cumc_comm_unpack1((unsigned char *)B1rpm,sizeof(int16_t),buf,&l);
-  cumc_comm_unpack1((unsigned char *)B2rpm,sizeof(int16_t),buf,&l);
-  cumc_comm_unpack1((unsigned char *)B3rpm,sizeof(int16_t),buf,&l);
+  cumc_comm_unpack1((unsigned char *)J1rpm,sizeof(uint16_t),buf,&l);
+  cumc_comm_unpack1((unsigned char *)J2rpm,sizeof(uint16_t),buf,&l);
+  cumc_comm_unpack1((unsigned char *)J3rpm,sizeof(uint16_t),buf,&l);
+  cumc_comm_unpack1((unsigned char *)B1rpm,sizeof(uint16_t),buf,&l);
+  cumc_comm_unpack1((unsigned char *)B2rpm,sizeof(uint16_t),buf,&l);
+  cumc_comm_unpack1((unsigned char *)B3rpm,sizeof(uint16_t),buf,&l);
 
   return(0);
 }
