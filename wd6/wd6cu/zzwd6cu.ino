@@ -1,7 +1,7 @@
 void loop_counter(void)
 {
   g_loop_cnt++;
-  if((g_millis-g_loop_ct) > 100) {
+  if((g_millis-g_loop_ct) > 1000) {
     g_loop_cps=g_loop_cnt;
     g_loop_cnt=0;
     g_loop_ct=g_millis;

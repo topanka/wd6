@@ -39,6 +39,8 @@
 #define UCCB_DSP_FINSCAN_OI_NUM              5
 #define UCCB_DSP_ADJPS_OI_NUM                2
 #define UCCB_DSP_TSCR_OI_NUM                 1
+#define UCCB_DSP_TSCR_OI_NUM                 1
+#define UCCB_DSP_REMOTEVIDEO_OI_NUM          1
 
 #define UCCB_DSP_TOOLS_OI_NUM                5
 
@@ -459,17 +461,28 @@ void dsp_scr_ship1(int force)
     lcd.print("V/");
     l_battV=g_sh1_battV;
     lcd.setCursor(11,1);
-    if(g_sh1_battA <= 0) {
+    if(g_sh1_battA < 89) {
       lcd.print("0.00");
     } else {
+/*      
       xx=(172UL*33UL*(long)g_sh1_battA)/1023;
       if(xx > 500) xx-=500;
       else xx=0;
       xx*=133;
       xx/=1000;
+*/      
+//      xx=(long)g_sh1_battA;
+//      lcd.print(xx,10);
+      xx=(g_sh1_battA_a*g_sh1_battA+g_sh1_battA_b)/1000L;
+      lcd.print(xx/100,10);
+      lcd.print(".");
+      xx%=100;
+      if(xx < 10) {
+        lcd.print("0");
+      } 
       lcd.print(xx,10);
     }
-    lcd.print("mA   ");
+    lcd.print("A    ");
     l_battA=g_sh1_battA;
     lcd.setCursor(0,2);
     lcd.print("mLc=");
@@ -1233,6 +1246,157 @@ void dsp_scr_tscr(int force)
   }
 }
 
+void dsp_scr_remotevideo(int force)
+{
+  static int l_cli=1;
+  static int l_oi=1;
+  static int l_key=NO_KEY;
+  static int l_mode=0;
+  int diff,l2p;
+
+  if(force == 1) l_mode=0;
+  if(l_mode == 1) {
+    l_mode=2;
+    if(l_oi == 1) {
+    } else if(l_oi == 2) {
+    } else if(l_oi == 3) {
+    } else if(l_oi == 4) {
+    } else if(l_oi == 5) {
+    }
+  }
+  if(l_mode == 0) {
+    if(g_key == UCCB_KEY_UP) {
+      if(l_cli > 1) {
+        l_cli--;
+        l_oi--;
+      } else {
+        if(l_oi > 1) {
+          l_oi--;
+        } else {
+          l_oi=UCCB_DSP_REMOTEVIDEO_OI_NUM;
+          if(l_oi >= 3) l_cli=3;
+          else l_cli=UCCB_DSP_REMOTEVIDEO_OI_NUM;
+        }
+      }
+    } else if(g_key == UCCB_KEY_DOWN) {
+      if((l_cli >= 3) || (l_cli >= UCCB_DSP_REMOTEVIDEO_OI_NUM)) {
+        if(l_oi >= UCCB_DSP_REMOTEVIDEO_OI_NUM) {
+          l_cli=1;
+          l_oi=1;
+        } else {
+          l_oi++;
+        }
+      } else {
+        l_oi++;
+        l_cli++;
+      }
+    } else if(g_key == UCCB_KEY_ENTER) {
+      l_mode=1;
+    } else if(g_key == UCCB_KEY_CANCEL) {
+      g_tools_sml=0;
+    }
+  } else {
+    if(g_key == UCCB_KEY_CANCEL) {
+      l_mode=0;
+    }
+  }
+
+  if(l_mode == 2) {
+    if(l_oi == 1) {
+      if(g_remotevideo_on == UCCB_REMOTEVIDEO_ON_OFF) g_remotevideo_on=UCCB_REMOTEVIDEO_ON_ON;
+      else g_remotevideo_on=UCCB_REMOTEVIDEO_ON_OFF;
+      remotevideo_power_switch();
+      l_mode=0;
+      force=1;
+    } else if(l_oi == 2) {
+      l_mode=0;
+    } else if(l_oi == 3) {
+       l_mode=0;
+    } else if(l_oi == 4) {
+       l_mode=0;
+    }
+  }
+  
+  if((force == 1) ||
+     ((l_key != g_key) && (l_mode == 0))) {
+    diff=l_cli-l_oi;   
+    l2p=1;    
+    if((diff+1 >= 1) && (diff+1 <= 3)) {
+      lcd.setCursor(0,l2p);
+      if(l_cli == l2p) {
+        lcd.print("*");
+      } else {
+        lcd.print(" ");
+      }
+      lcd.print("Remote video:");
+      if(g_remotevideo_on == UCCB_REMOTEVIDEO_ON_ON) {
+        lcd.print(" On ");
+      } else {
+        lcd.print(" Off");
+      }
+      l2p++;
+    }
+    
+    if(((diff+2 >= 1) && (diff+2 <= 3)) && (UCCB_DSP_REMOTEVIDEO_OI_NUM >= 2)){
+      lcd.setCursor(0,l2p);
+      if(l_cli == l2p) {
+        lcd.print("*");
+      } else {
+        lcd.print(" ");
+      }
+      lcd.print("Menu Line 2        ");
+      l2p++;
+    }
+
+    if(((diff+3 >= 1) && (diff+3 <= 3)) && (UCCB_DSP_REMOTEVIDEO_OI_NUM >= 3)) {
+      lcd.setCursor(0,l2p);
+      if(l_cli == l2p) {
+        lcd.print("*");
+      } else {
+        lcd.print(" ");
+      }
+      lcd.print("Menu Line 3        ");
+      l2p++;
+    }
+    
+    if((diff+4 >= 1) && (diff+4 <= 3)) {
+      lcd.setCursor(0,l2p);
+      if(l_cli == l2p) {
+        lcd.print("*");
+      } else {
+        lcd.print(" ");
+      }
+      lcd.print("Menu Line 4        ");
+      l2p++;
+    }
+    
+    if((diff+5 >= 1) && (diff+5 <= 3)) {
+      lcd.setCursor(0,l2p);
+      if(l_cli == l2p) {
+        lcd.print("*");
+      } else {
+        lcd.print(" ");
+      }
+      lcd.print("Menu line 5        ");
+      l2p++;
+    }
+    
+    if(l_oi == 1) {
+      lcd.setCursor(0,l_cli);
+    } else if(l_oi == 2) {
+      lcd.setCursor(0,l_cli);
+    } else if(l_oi == 3) {
+      lcd.setCursor(0,l_cli);
+    } else if(l_oi == 4) {
+      lcd.setCursor(0,l_cli);
+    } else if(l_oi == 5) {
+      lcd.setCursor(0,l_cli);
+    }
+    l_key=g_key;
+  }
+}
+
+
 void dsp_scr_tools(int force)
 {
   static int l_cli=1;
@@ -1292,6 +1456,10 @@ void dsp_scr_tools(int force)
         dsp_scr_clear_line(1);
         dsp_scr_clear_line(2);
         dsp_scr_clear_line(3);
+      } else if(l_oi == 4) {
+        dsp_scr_clear_line(1);
+        dsp_scr_clear_line(2);
+        dsp_scr_clear_line(3);
       }
     }
   }
@@ -1306,7 +1474,8 @@ void dsp_scr_tools(int force)
       dsp_scr_tscr(force);
 //      g_tools_sml=0;
     } else if(l_oi == 4) {
-      g_tools_sml=0;
+      dsp_scr_remotevideo(force);
+//      g_tools_sml=0;
     } else if(l_oi == 5) {
       g_tools_sml=0;
     }
@@ -1361,7 +1530,7 @@ void dsp_scr_tools(int force)
       } else {
         lcd.print(" ");
       }
-      lcd.print("Unused2            ");
+      lcd.print("Remote video     ->");
       l2p++;
     }
     

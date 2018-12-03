@@ -210,3 +210,15 @@ int tscr_power_switch(void)
   return(0);
 
 }
+
+int remotevideo_power_switch(void)
+{
+  if(g_remotevideo_on == UCCB_REMOTEVIDEO_ON_ON) {
+    ump_digitalWrite(UCCB_REMOTEVIDEO_ON_UMPPORT,UCCB_REMOTEVIDEO_ON_ON);
+  } else {
+    ump_digitalWrite(UCCB_REMOTEVIDEO_ON_UMPPORT,UCCB_REMOTEVIDEO_ON_OFF);
+  }
+  
+  return(0);
+
+}

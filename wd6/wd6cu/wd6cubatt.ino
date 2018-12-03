@@ -31,7 +31,7 @@ int batt_read(int16_t *battV, int16_t *battA)
     l_bv=smar_analogRead(UCCB_BATTV_PORT);
     l_brtv=g_millis;
   }
-  if((g_millis-l_brta) >= 50) {
+  if((g_millis-l_brta) >= 25) {
     l_ba=smar_analogRead(UCCB_BATTA_PORT);
     l_brta=g_millis;
   }

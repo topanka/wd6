@@ -177,10 +177,10 @@ long g_sh1_battV_b=-15364;
 //lipo discharch voltage 7.0V
 int g_sh1_battV_min=733;
 
-//y=ax+b; a=0.0378846, b=-18.8018
+//y=ax+b; a=0.0419159, b=-3.72071
 int g_sh1_battA=-1;
-long g_sh1_battA_a=3788;
-long g_sh1_battA_b=-1880180;
+long g_sh1_battA_a=4192;
+long g_sh1_battA_b=-372071;
 
 //comm
 unsigned long g_sh1_w_commpkt_counter=0;
@@ -230,3 +230,11 @@ char *g_master_password=(char*)"6661";
 MYTMR g_tmr_finscan={0};
 int g_finscan_pos=1500;
 Servo g_servo_finscan;
+
+//remote video
+
+#define UCCB_REMOTEVIDEO_ON_UMPPORT     9       //PD6
+#define UCCB_REMOTEVIDEO_ON_ON          HIGH
+#define UCCB_REMOTEVIDEO_ON_OFF         LOW
+
+int g_remotevideo_on=UCCB_REMOTEVIDEO_ON_OFF;

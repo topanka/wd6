@@ -8,10 +8,10 @@ void loop_counter(void)
     
     Serial.print("loopcps ");
     Serial.println(g_loop_cps);
-    Serial.print("fsY ");
-    Serial.println(g_cb_fsY);
+//    Serial.print("fsY ");
+//    Serial.println(g_cb_fsY);
 
-    
+/*    
     Serial.print("J1 curr: ");
     Serial.print(g_wd6md_J1.curr->getRawValue());
     Serial.print("\t");
@@ -20,6 +20,30 @@ void loop_counter(void)
     Serial.print(g_wd6md_J2.curr->getRawValue());
     Serial.print("\t");
     Serial.println(g_wd6md_J2.curr->getValue());    
+*/    
+    Serial.print(g_wd6md_J1.md->getSpeed());
+    Serial.print(" ");
+    Serial.print(g_wd6md_J2.md->getSpeed());
+    Serial.print(" ");
+    Serial.print(g_wd6md_J3.md->getSpeed());
+    Serial.print(" ");
+    Serial.print(g_wd6md_B1.md->getSpeed());
+    Serial.print(" ");
+    Serial.print(g_wd6md_B2.md->getSpeed());
+    Serial.print(" ");
+    Serial.println(g_wd6md_B3.md->getSpeed());
+    
+    Serial.print(g_wd6md_J1.re->rpm);
+    Serial.print(" ");
+    Serial.print(g_wd6md_J2.re->rpm);
+    Serial.print(" ");
+    Serial.print(g_wd6md_J3.re->rpm);
+    Serial.print(" ");
+    Serial.print(g_wd6md_B1.re->rpm);
+    Serial.print(" ");
+    Serial.print(g_wd6md_B2.re->rpm);
+    Serial.print(" ");
+    Serial.println(g_wd6md_B3.re->rpm);
 
     Serial.print("m1s: ");
     Serial.print(g_cb_m1s);
@@ -38,7 +62,7 @@ void loop_counter(void)
 void setup()
 {
 
-  delay(1000);
+  delay(500);
   
 pinMode(LED_BUILTIN, OUTPUT);
 digitalWrite(LED_BUILTIN, HIGH);
@@ -65,13 +89,14 @@ digitalWrite(LED_BUILTIN, HIGH);
   
   wd6md_setup();
   
-  delay(2000);
+  delay(1000);
   g_loop_ct=millis();
+  Serial.println("Motor controller ready!");
 }
 
 void loop()
 {
-  int rpm,dir;
+  int rpm,dir,speed;
   
   loop_counter();
   
@@ -80,6 +105,7 @@ void loop()
   
 //  temp_read();
 
+#if 0
   rpm=0;
   
   if((g_cb_fsY > 530) && (g_cb_fsY < 1024)) {
@@ -105,13 +131,26 @@ void loop()
     g_wd6md_B2.md->setSpeed(0);
     g_wd6md_B3.md->setSpeed(0);
   } else {
+    speed=400;
+    g_wd6md_J1.md->setSpeed(speed);
+    g_wd6md_J2.md->setSpeed(speed);
+    g_wd6md_J3.md->setSpeed(speed);
+    g_wd6md_B1.md->setSpeed(speed);
+    g_wd6md_B2.md->setSpeed(speed);
+    g_wd6md_B3.md->setSpeed(speed);
+    
+/*    
     wd6md_setrpm(&g_wd6md_J1,rpm,dir);
     wd6md_setrpm(&g_wd6md_J2,rpm,dir);
     wd6md_setrpm(&g_wd6md_J3,rpm,dir);
     wd6md_setrpm(&g_wd6md_B1,rpm,dir);
     wd6md_setrpm(&g_wd6md_B2,rpm,dir);
     wd6md_setrpm(&g_wd6md_B3,rpm,dir);
+*/  
   }
+#endif
+
+  wd6md_setspeed();
 
   wd6cumd_comm();
 }

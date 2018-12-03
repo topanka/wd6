@@ -1,6 +1,6 @@
-#define UCCB_MD_MINSPEED_FWD      55
+#define UCCB_MD_MINSPEED_FWD      65
 #define xUCCB_MD_MAXSPEED_FWD      400
-#define UCCB_MD_MINSPEED_REW      -55
+#define UCCB_MD_MINSPEED_REW      -65
 #define xUCCB_MD_MAXSPEED_REW      -400
 
 /*
@@ -227,10 +227,8 @@ int eval_md_speed(int *m1s, int *m2s, int *rdd)
       }
     } else if(vx == 0) {
       if(vy > 0) {
-  //      v1=map(vy,0,g_fs_y_FWD,UCCB_MD_MINSPEED_FWD,UCCB_MD_MAXSPEED_FWD);
         v1=map(vy,0,g_fs_y_FWD,UCCB_MD_MINSPEED_FWD,g_md_maxspeed_fwd);
       } else {
-  //      v1=map(vy,0,-g_fs_y_REW,UCCB_MD_MINSPEED_REW,UCCB_MD_MAXSPEED_REW);
         v1=map(vy,0,-g_fs_y_REW,UCCB_MD_MINSPEED_REW,g_md_maxspeed_rew);
       }
     } else if((vx > 0) && (vy > 0)) {
@@ -265,10 +263,8 @@ int eval_md_speed(int *m1s, int *m2s, int *rdd)
   
     if(q != 0) {
       if(vy >= 0) {
-  //      v1=map(vy,0,My,UCCB_MD_MINSPEED_FWD,UCCB_MD_MAXSPEED_FWD);
         v1=map(vy,0,My,UCCB_MD_MINSPEED_FWD,g_md_maxspeed_fwd);
       } else {
-  //      v1=map(vy,0,-My,UCCB_MD_MINSPEED_REW,UCCB_MD_MAXSPEED_REW);
         v1=map(vy,0,-My,UCCB_MD_MINSPEED_REW,g_md_maxspeed_rew);
       }
     }
@@ -436,4 +432,3 @@ int eval_joy_getpos(int *vx, int *vy, int *vz)
   
   return(0);
 }
-
