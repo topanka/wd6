@@ -17,15 +17,20 @@ int temp_read(void)
   ra_temp.addValue(temp);
   temp=ra_temp.getAverage()+0.5;
   g_temperature=(int16_t)(ra_temp.getAverage()*4.8828125);
-  
-//  Serial.print(temp/10);
-//  Serial.print(".");
-//  Serial.print(temp%10);
-//  Serial.println("C");
+
+  g_temperature=0;
+
+/*  
+  Serial.print(temp/10);
+  Serial.print(".");
+  Serial.print(temp%10);
+  Serial.println("C");
+*/
 
   Serial.print(g_battV);
   Serial.print(" ");
   Serial.println(g_battA);
+  
   
   return(1);  
 }

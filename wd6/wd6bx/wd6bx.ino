@@ -171,19 +171,19 @@ unsigned char g_shiptobeready=0;
 
 //battery
 //y=ax+b; a=0.00975946, b=-0.153645
-int g_sh1_battV=-1;
+int16_t g_sh1_battV=-1;
 long g_sh1_battV_a=976;
 long g_sh1_battV_b=-15364;
 //lipo discharch voltage 7.0V
 int g_sh1_battV_min=733;
 
 //y=ax+b; a=0.0419159, b=-3.72071
-int g_sh1_battA=-1;
+int16_t g_sh1_battA=-1;
 long g_sh1_battA_a=4192;
 long g_sh1_battA_b=-372071;
 
 //comm
-unsigned long g_sh1_w_commpkt_counter=0;
+unsigned long g_sh1_loop_cps=0;
 uint16_t g_sh1_lost_cont=0;
 uint16_t g_sh1_lost_tot=0;
 
@@ -203,13 +203,13 @@ int g_sh1_maxmspeed=UCCB_MD_MAXSPEED;
 int g_sh1_rotscale=0;
 float g_sh1_rotcurve=1.0;
 
-int g_sh1_temperature=-1;
+int16_t g_sh1_temperature=-1;
 
 unsigned long g_scnt=0;
 
 //touch screen
 
-#define UCCB_TSCR_ON_UMPPORT     5       //PG3
+#define UCCB_TSCR_ON_UMPPORT     9       //PD6
 #define UCCB_TSCR_ON_ON          HIGH
 #define UCCB_TSCR_ON_OFF         LOW
 
@@ -233,7 +233,7 @@ Servo g_servo_finscan;
 
 //remote video
 
-#define UCCB_REMOTEVIDEO_ON_UMPPORT     9       //PD6
+#define UCCB_REMOTEVIDEO_ON_UMPPORT     5       //PG3
 #define UCCB_REMOTEVIDEO_ON_ON          HIGH
 #define UCCB_REMOTEVIDEO_ON_OFF         LOW
 

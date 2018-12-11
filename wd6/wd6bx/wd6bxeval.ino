@@ -1,14 +1,7 @@
 #define UCCB_MD_MINSPEED_FWD      65
-#define xUCCB_MD_MAXSPEED_FWD      400
+#define UCCB_MD_MAXSPEED_FWD      400
 #define UCCB_MD_MINSPEED_REW      -65
-#define xUCCB_MD_MAXSPEED_REW      -400
-
-/*
-#define UCCB_MD_M1_MINSPEED_FWD      45
-#define UCCB_MD_M1_MAXSPEED_FWD      400
-#define UCCB_MD_M1_MINSPEED_REW      -45
-#define UCCB_MD_M1_MAXSPEED_REW      -400
-*/
+//#define UCCB_MD_MAXSPEED_REW      -400
 
 //#define UCCB_FS_CENGAP            6
 //#define UCCB_TS_CENGAP            6
@@ -221,9 +214,9 @@ int eval_md_speed(int *m1s, int *m2s, int *rdd)
       v1=0;
     } else if(vy == 0) {
       if(vx > 0) {
-        v1=map(vx,0,g_fs_x_RIGHT,UCCB_MD_MINSPEED_FWD,xUCCB_MD_MAXSPEED_FWD/4);
+        v1=map(vx,0,g_fs_x_RIGHT,UCCB_MD_MINSPEED_FWD,UCCB_MD_MAXSPEED_FWD/3);
       } else {
-        v1=map(vxn,0,g_fs_x_LEFT,UCCB_MD_MINSPEED_FWD,xUCCB_MD_MAXSPEED_FWD/4);
+        v1=map(vxn,0,g_fs_x_LEFT,UCCB_MD_MINSPEED_FWD,UCCB_MD_MAXSPEED_FWD/3);
       }
     } else if(vx == 0) {
       if(vy > 0) {
@@ -339,14 +332,6 @@ int eval_md_speed(int *m1s, int *m2s, int *rdd)
       *m2s=v2;
     }
   }
-
-/*  
-  if(*m1s > 0) {
-    *m1s=map(*m1s,UCCB_MD_MINSPEED_FWD,UCCB_MD_MAXSPEED_FWD,UCCB_MD_M1_MINSPEED_FWD,UCCB_MD_M1_MAXSPEED_FWD);
-  } else if(*m1s < 0) {
-    *m1s=map(*m1s,UCCB_MD_MINSPEED_REW,UCCB_MD_MAXSPEED_REW,UCCB_MD_M1_MINSPEED_REW,UCCB_MD_M1_MAXSPEED_REW);
-  }
-*/  
   
   if(vx > 0) {
 //    *rdd=(UCCB_RDD_MAXPOS*vx)/g_fs_x_RIGHT;

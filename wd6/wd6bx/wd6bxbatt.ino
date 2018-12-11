@@ -17,20 +17,23 @@ int batt_setup(void)
   uint8_t avn;
 
   ump_pinMode(UCCB_ADJPS_ON_UMPPORT,OUTPUT);
-
 /*
   ump_digitalWrite(UCCB_ADJPS_ON_UMPPORT,UCCB_ADJPS_ON_OFF);
   g_adjps_on=0;
 */  
-  
-
   ump_digitalWrite(UCCB_ADJPS_ON_UMPPORT,UCCB_ADJPS_ON_ON);
   g_adjps_on=1;
-
 
   ump_pinMode(UCCB_ADJPS_LEVEL_UMPPORT,OUTPUT);
   ump_digitalWrite(UCCB_ADJPS_LEVEL_UMPPORT,UCCB_ADJPS_LEVEL_HIGH);
   g_adjps_level=UCCB_ADJPS_LEVEL_HIGH;
+
+  ump_pinMode(UCCB_REMOTEVIDEO_ON_UMPPORT,OUTPUT);
+  if(g_remotevideo_on == UCCB_REMOTEVIDEO_ON_ON) {
+    ump_digitalWrite(UCCB_REMOTEVIDEO_ON_UMPPORT,UCCB_REMOTEVIDEO_ON_ON);
+  } else {
+    ump_digitalWrite(UCCB_REMOTEVIDEO_ON_UMPPORT,UCCB_REMOTEVIDEO_ON_OFF);
+  }
 
   avn=7;
   smar_init(&g_smar_ADJV,SMAR_ADCLOC_ARDUINO,UCCB_ADJV_PORT,avn,5,3);
@@ -71,7 +74,7 @@ int batt_setup(void)
   for(i=0;i < 2*avn;i++) {
     g_5_0V=smar_analogRead(&g_smar_5_0V);
   }
-  
+
   pinMode(UCCB_SHUTDOWN_PORT,OUTPUT);
   tmr_init(&g_tmr_SD,250);
   
@@ -220,5 +223,4 @@ int remotevideo_power_switch(void)
   }
   
   return(0);
-
 }

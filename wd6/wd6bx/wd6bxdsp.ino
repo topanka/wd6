@@ -434,7 +434,7 @@ void dsp_scr_ship1(int force)
   static unsigned int l_m1c=0;
   static unsigned int l_m2c=0;
   static int l_temp=-1;
-  static int l_sh1_w_commpkt_counter=-1;
+  static int l_sh1_loop_cps=-1;
   long xx;
   
   if((force == 1) ||
@@ -443,7 +443,7 @@ void dsp_scr_ship1(int force)
      (l_m1c != g_sh1_m1c) ||
      (l_m2c != g_sh1_m2c) ||
      (l_temp != g_sh1_temperature) ||
-     (l_sh1_w_commpkt_counter != g_sh1_w_commpkt_counter)) {
+     (l_sh1_loop_cps != g_sh1_loop_cps)) {
     lcd.setCursor(0,1);
     lcd.print("batt:");
     if(g_sh1_battV < 0) {
@@ -499,9 +499,9 @@ void dsp_scr_ship1(int force)
     
     lcd.setCursor(0,3);
     lcd.print("cnt=");
-    lcd.print(g_sh1_w_commpkt_counter,10);
+    lcd.print(g_sh1_loop_cps,10);
     lcd.print("   ");
-    l_sh1_w_commpkt_counter=g_sh1_w_commpkt_counter;
+    l_sh1_loop_cps=g_sh1_loop_cps;
     
     lcd.setCursor(10,3);
     lcd.print("T=");

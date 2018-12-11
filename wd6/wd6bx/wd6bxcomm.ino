@@ -222,13 +222,13 @@ int comm_unpackuccb(unsigned char *buf, unsigned int len,
   
   l=1;
   comm_unpack1((unsigned char *)commpkt_counter,sizeof(unsigned long),buf,&l);
-  comm_unpack1((unsigned char *)battV,sizeof(int),buf,&l);
-  comm_unpack1((unsigned char *)battA,sizeof(int),buf,&l);
+  comm_unpack1((unsigned char *)battV,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)battA,sizeof(int16_t),buf,&l);
   comm_unpack1((unsigned char *)m1c,sizeof(unsigned int),buf,&l);
   comm_unpack1((unsigned char *)m2c,sizeof(unsigned int),buf,&l);
   comm_unpack1((unsigned char *)m1rpm,sizeof(uint16_t),buf,&l);
   comm_unpack1((unsigned char *)m2rpm,sizeof(uint16_t),buf,&l);
-  comm_unpack1((unsigned char *)temp,sizeof(int),buf,&l);
+  comm_unpack1((unsigned char *)temp,sizeof(int16_t),buf,&l);
 
   return(0);
 }
@@ -249,7 +249,7 @@ int comm_recv(void)
   
   if(ret == UCCB_PST_READY) {
     comm_unpackuccb(g_r_commbuf,g_r_len,
-                    &g_sh1_w_commpkt_counter,
+                    &g_sh1_loop_cps,
                     &g_sh1_battV,
                     &g_sh1_battA,
                     &g_sh1_m1c,
@@ -257,6 +257,9 @@ int comm_recv(void)
                     &rpm1,
                     &rpm2,
                     &g_sh1_temperature);
+                    
+g_sh1_loop_cps/=1000;
+                    
     g_shiptobeready=1;
     g_commmode=1;
     g_sh1_lost_cont=0;
