@@ -431,7 +431,7 @@ void dsp_scr_ship1(int force)
 {
   static int l_battV=-1;
   static int l_battA=-1;
-  static unsigned int l_m1c=0;
+  static unsigned int l_mJc=0;
   static unsigned int l_m2c=0;
   static int l_temp=-1;
   static int l_sh1_loop_cps=-1;
@@ -440,7 +440,7 @@ void dsp_scr_ship1(int force)
   if((force == 1) ||
      (l_battV != g_sh1_battV) ||
      (l_battA != g_sh1_battA) ||
-     (l_m1c != g_sh1_m1c) ||
+     (l_mJc != g_sh1_mJc) ||
      (l_m2c != g_sh1_m2c) ||
      (l_temp != g_sh1_temperature) ||
      (l_sh1_loop_cps != g_sh1_loop_cps)) {
@@ -492,10 +492,10 @@ void dsp_scr_ship1(int force)
     l_m2c=g_sh1_m2c;
     lcd.setCursor(10,2);
     lcd.print("mRc=");
-    lcd.print(g_sh1_m1c,10);
-    if(g_sh1_m1c > 99) lcd.print("  ");
+    lcd.print(g_sh1_mJc,10);
+    if(g_sh1_mJc > 99) lcd.print("  ");
     else lcd.print("   ");
-    l_m1c=g_sh1_m1c;
+    l_mJc=g_sh1_mJc;
     
     lcd.setCursor(0,3);
     lcd.print("cnt=");
@@ -520,7 +520,7 @@ void dsp_scr_ship1(int force)
 
 void dsp_scr_ship2(int force)
 {
-  static unsigned int l_m1c=0;
+  static unsigned int l_mJc=0;
   static unsigned int l_m2c=0;
   static uint16_t l_m1rpm=0;
   static uint16_t l_m2rpm=0;
@@ -538,7 +538,7 @@ void dsp_scr_ship2(int force)
     g_sh1_m1on=(g_sh1_m1on+1)%2;
   }
   if((force == 1) ||
-     (l_m1c != g_sh1_m1c) ||
+     (l_mJc != g_sh1_mJc) ||
      (l_m2c != g_sh1_m2c) ||
      (l_x != x) ||
      (l_y != y) ||
@@ -582,11 +582,11 @@ void dsp_scr_ship2(int force)
     if(g_sh1_m1on == 0) {
       lcd.print("#####");
     } else {
-      lcd.print(g_sh1_m1c,10);
-      if(g_sh1_m1c > 99) lcd.print("  ");
+      lcd.print(g_sh1_mJc,10);
+      if(g_sh1_mJc > 99) lcd.print("  ");
       else lcd.print("    ");
     }
-    l_m1c=g_sh1_m1c;
+    l_mJc=g_sh1_mJc;
     
     lcd.setCursor(0,1);
     lcd.print("mLc=");

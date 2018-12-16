@@ -25,11 +25,11 @@ int temp_read(void)
   Serial.print(".");
   Serial.print(temp%10);
   Serial.println("C");
-*/
-
   Serial.print(g_battV);
   Serial.print(" ");
   Serial.println(g_battA);
+*/
+
   
   
   return(1);  

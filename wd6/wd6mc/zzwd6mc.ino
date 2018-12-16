@@ -21,6 +21,7 @@ void loop_counter(void)
     Serial.print("\t");
     Serial.println(g_wd6md_J2.curr->getValue());    
 */    
+/*
     Serial.print(g_wd6md_J1.md->getSpeed());
     Serial.print(" ");
     Serial.print(g_wd6md_J2.md->getSpeed());
@@ -32,6 +33,7 @@ void loop_counter(void)
     Serial.print(g_wd6md_B2.md->getSpeed());
     Serial.print(" ");
     Serial.println(g_wd6md_B3.md->getSpeed());
+*/    
     
     Serial.print(g_wd6md_J1.re->rpm);
     Serial.print(" ");
@@ -49,6 +51,7 @@ void loop_counter(void)
     Serial.print(g_cb_m1s);
     Serial.print(" m2s:");
     Serial.println(g_cb_m2s);    
+   
 
     g_force_send=1;
     comm_send();

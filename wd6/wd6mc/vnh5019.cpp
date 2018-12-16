@@ -124,7 +124,12 @@ void VNH5019MD::incSpeed(int step, int dir)
     if(speed > 0) speed=0;
     speed=-speed;
   }
+/*  
   if((step > 0) && (speed < 60)) {
+    speed=60;
+  }
+*/  
+  if(speed < 60) {
     speed=60;
   }
 

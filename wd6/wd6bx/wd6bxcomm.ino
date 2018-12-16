@@ -252,7 +252,7 @@ int comm_recv(void)
                     &g_sh1_loop_cps,
                     &g_sh1_battV,
                     &g_sh1_battA,
-                    &g_sh1_m1c,
+                    &g_sh1_mJc,
                     &g_sh1_m2c,
                     &rpm1,
                     &rpm2,

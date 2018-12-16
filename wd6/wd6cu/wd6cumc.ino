@@ -217,7 +217,8 @@ int cumc_comm_recv(void)
 //Serial.print(g_mc_J3rpm);
 //Serial.print(" ");
 //Serial.println(g_mc_B3rpm);
-                    
+    g_rpm_m1=(g_mc_J1rpm+g_mc_J2rpm+g_mc_J3rpm)/3;                  
+    g_rpm_m2=(g_mc_B1rpm+g_mc_B2rpm+g_mc_B3rpm)/3;                  
 
 /*
                     Serial.print(g_tscr_power);

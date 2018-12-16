@@ -1,5 +1,8 @@
 #define WD6_MIN_SPEED 65
 
+#define WD6_MIN_RPM   4
+#define WD6_MAX_RPM   65
+
 int wd6md_setup(void)
 {
   g_wd6md_J1.name="J1";
@@ -58,9 +61,10 @@ int wd6md_setrpm(WD6MD *wd6md, int rpm, int dir)
   if(wd6md->re->rpm < rpm) {
     sd=1;
 //    wd6md->md->incSpeed(1,dir);
-/*    
+    
 Serial.print(wd6md->name);
 Serial.print("+");
+/*    
 Serial.print(g_millis);
 Serial.print(" ");
 Serial.print(wd6md->re->rpm);
@@ -68,9 +72,10 @@ Serial.print(" ");
 Serial.println(wd6md->md->getSpeed());
 */
   } else {
-/*    
+    
 Serial.print(wd6md->name);
 Serial.print("-");
+/*    
 Serial.print(g_millis);
 Serial.print(" ");
 Serial.print(wd6md->re->rpm);
@@ -80,13 +85,29 @@ Serial.println(wd6md->md->getSpeed());
     sd=-1;
 //    wd6md->md->incSpeed(-1,dir);
   }
-  rpmd=abs(wd6md->re->rpm-rpm);
+
+  
+  rpmd=wd6md->re->rpm-rpm;
+  rpmd=abs(rpmd);
+//Serial.print(rpmd);
+//Serial.print(" ");
   if(rpmd <= 1) stp=1;
   else if(rpmd <= 2) stp=2;
-  else if(rpmd <= 3) stp=3;
+  else if(rpmd <= 3) stp=4;
   else if(rpmd <= 10) stp=rpmd*2;
   else stp=rpmd*3;
   stp=stp*sd;
+
+
+Serial.print(wd6md->re->rpm);
+Serial.print(" ");
+Serial.print(rpm);
+Serial.print(" ");
+Serial.print(stp);
+Serial.print(" ");
+Serial.println(wd6md->md->getSpeed());
+
+  
   wd6md->md->incSpeed(stp,dir);
 
   return(1);
@@ -124,16 +145,20 @@ int wd6md_readcurrent(void)
 int  wd6md_setspeed1(int16_t ms, int16_t *ms_p, WD6MD *wd6md1, WD6MD *wd6md2, WD6MD *wd6md3)
 {
   uint16_t rpm;
-  int dir=1;
+  int dir=1,msd;
 
   if((ms >= 0) && (ms < WD6_MIN_SPEED)) ms=0;
   else if((ms < 0) && (-ms < WD6_MIN_SPEED)) ms=0;
   if(ms < 0) dir=-1;  
-  if(*ms_p == g_cb_m1s) {
+  msd=ms-*ms_p;
+  msd=abs(msd);
+//  if(*ms_p == ms) {
+  if(msd <= 2) {
     if(*ms_p == 0) {
       wd6md1->md->setSpeed(0);
       wd6md2->md->setSpeed(0);
       wd6md3->md->setSpeed(0);
+      *ms_p=ms;
       return(0);
     }
     if((rpm=wd6md1->re->rpm) == 0) {
@@ -141,17 +166,30 @@ int  wd6md_setspeed1(int16_t ms, int16_t *ms_p, WD6MD *wd6md1, WD6MD *wd6md2, WD
         rpm=wd6md3->re->rpm;
       } 
 //      wd6md_setrpm(wd6md1,rpm,dir);
+      if(rpm < WD6_MIN_RPM) rpm=WD6_MIN_RPM;
+    }
+    if(abs(ms) < 70) {
+      rpm=WD6_MIN_RPM;
     }
     wd6md_setrpm(wd6md1,rpm,dir);
     wd6md_setrpm(wd6md2,rpm,dir);
     wd6md_setrpm(wd6md3,rpm,dir);
+//    *ms_p=ms;
     return(0);
   }
+
+//if ms > ms_p && getSpeed > ms return
+//if ms < ms_p && getSpeed < ms return
+  
   wd6md1->md->setSpeed(ms);
-  if(abs(wd6md2->md->getSpeed()-ms) > 5) {
+  msd=wd6md2->md->getSpeed()-ms;
+  msd=abs(msd);
+  if(msd > 4) {
     wd6md2->md->setSpeed(ms);
   }
-  if(abs(wd6md3->md->getSpeed()-ms) > 5) {
+  msd=wd6md3->md->getSpeed()-ms;
+  msd=abs(msd);
+  if(msd > 4) {
     wd6md3->md->setSpeed(ms);
   }
   
@@ -163,7 +201,7 @@ int  wd6md_setspeed(void)
 {
   static int16_t l_m1s=0;
   static int16_t l_m2s=0;
-  
+
   wd6md_setspeed1(g_cb_m1s,&l_m1s,&g_wd6md_J1,&g_wd6md_J2,&g_wd6md_J3);
   wd6md_setspeed1(g_cb_m2s,&l_m2s,&g_wd6md_B1,&g_wd6md_B2,&g_wd6md_B3);
 

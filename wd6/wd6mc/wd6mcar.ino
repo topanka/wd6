@@ -83,7 +83,7 @@ end:
 
 int smar_analogRead(int port)
 {
-  int rval=-1,iport,v,lvch=0;
+  int rval=-1,iport,v,lvch=0,d;
   
   iport=smar_getportidx(port);
   if((iport < 0) || (iport >= SMAR_TOT_IDX)) goto end;
@@ -120,7 +120,9 @@ if(iport == 0) {
       rval=v;
     } else {
       if(smar[iport].lvc++ > smar[iport].eqn) {
-        if(abs(smar[iport].lvv-v) <= 3) {
+        d=smar[iport].lvv-v;
+        d=abs(d);
+        if(d <= 3) {
           if((g_millis-smar[iport].lvt) > 300) lvch=1;
         } else {
           lvch=1;

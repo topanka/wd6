@@ -188,7 +188,7 @@ uint16_t g_sh1_lost_cont=0;
 uint16_t g_sh1_lost_tot=0;
 
 //md
-unsigned int g_sh1_m1c=0;
+unsigned int g_sh1_mJc=0;
 unsigned int g_sh1_m2c=0;
 uint16_t g_sh1_m1rpm=0;
 uint16_t g_sh1_m2rpm=0;

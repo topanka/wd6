@@ -22,7 +22,7 @@ uint16_t qe_rpm_tbi(WD6RE *wd6re)
 {
   unsigned long tbi;
   unsigned long atbi;
-  int i;
+//  int i;
 
 
 /*

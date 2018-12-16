@@ -5,6 +5,10 @@ void loop_counter(void)
     g_loop_cps=g_loop_cnt;
     g_loop_cnt=0;
     g_loop_ct=g_millis;
+
+    Serial.print("loopcps ");
+    Serial.println(g_loop_cps);
+    
   }
 }
 
@@ -73,4 +77,3 @@ void loop()
   tscr_comm();
   
 }
-
