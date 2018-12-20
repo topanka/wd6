@@ -1,5 +1,3 @@
-//MAX RPM 65
-
 void loop_counter(void)
 {
   g_millis=millis();
@@ -21,7 +19,7 @@ void loop_counter(void)
     Serial.print("\t");
     Serial.println(g_wd6md_J2.curr->getValue());    
 */    
-/*
+
     Serial.print(g_wd6md_J1.md->getSpeed());
     Serial.print(" ");
     Serial.print(g_wd6md_J2.md->getSpeed());
@@ -33,7 +31,7 @@ void loop_counter(void)
     Serial.print(g_wd6md_B2.md->getSpeed());
     Serial.print(" ");
     Serial.println(g_wd6md_B3.md->getSpeed());
-*/    
+    
     
     Serial.print(g_wd6md_J1.re->rpm);
     Serial.print(" ");
@@ -153,7 +151,8 @@ void loop()
   }
 #endif
 
-  wd6md_setspeed();
+//  wd6md_setspeedx();
 
+  wd6md_setspeed();
   wd6cumd_comm();
 }

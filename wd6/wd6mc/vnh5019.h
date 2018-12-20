@@ -3,6 +3,8 @@
 
 #include <Arduino.h>
 
+#define WD6_MIN_SPEED 65
+
 typedef void (*isr_ft)(void);
 
 /*

@@ -3,7 +3,6 @@
 #define WD6RE_ICNC_TIME    400        //interrupt counter not changed, zero speed
 
 void wd6re_setup() {
-  // put your setup code here, to run once:
   g_wd6re_J1.tbi=1;
   g_wd6re_J2.tbi=1;
   g_wd6re_J3.tbi=1;
@@ -32,7 +31,7 @@ uint16_t qe_rpm_tbi(WD6RE *wd6re)
   Serial.println(g_wd6re_ic1,DEC);
 */
 
-  if(wd6re->l_r0 == wd6re->ic) {
+  if(wd6re->ico == wd6re->ic) {
     if(g_millis > wd6re->l_t0+WD6RE_ICNC_TIME) {
       wd6re->l_sum=0;
       wd6re->l_tbi[0]=0;
@@ -44,7 +43,7 @@ uint16_t qe_rpm_tbi(WD6RE *wd6re)
     }
   } else {
     wd6re->l_t0=g_millis;
-    wd6re->l_r0=wd6re->ic;
+    wd6re->ico=wd6re->ic;
     noInterrupts();
     tbi=wd6re->tbi;
     interrupts();
@@ -105,7 +104,8 @@ uint16_t qe_rpm_tbi(WD6RE *wd6re)
   Serial.println(atbi,DEC);
 */  
 
-  wd6re->l_rpm=1000000UL/atbi;
+//  wd6re->l_rpm=1000000UL/atbi;
+  wd6re->l_rpm=1400000UL/atbi;
 //  l_rpm=2000000UL/atbi;
   return(wd6re->l_rpm);
 }
@@ -125,9 +125,6 @@ int wd6re_readrpm(WD6MD *wd6md)
     Serial.println(wd6re->rpm);
 */    
     wd6re->rpmo=wd6re->rpm;
-  }
-  if(wd6re->ico != wd6re->ic) {
-    wd6re->ico=wd6re->ic;
   }
 
   return(0);

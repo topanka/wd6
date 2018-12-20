@@ -278,7 +278,8 @@ int eval_md_speed(int *m1s, int *m2s, int *rdd)
         } else if(v2 < 0) {
           v2=map(v2,0,v1,UCCB_MD_MINSPEED_REW,v1);
         } else {
-          v2=0;
+//          v2=0;
+          v2=UCCB_MD_MINSPEED_FWD;
         }
       } else {
         v2=-((long)v1*(vxn-g_fs_DC_RIGHT))/g_fs_DC_RIGHT;
@@ -287,7 +288,8 @@ int eval_md_speed(int *m1s, int *m2s, int *rdd)
         } else if(v2 < 0) {
           v2=map(v2,0,-abs(v1),UCCB_MD_MINSPEED_REW,-abs(v1));
         } else {
-        	v2=0;
+//        	v2=0;
+          v2=UCCB_MD_MINSPEED_FWD;
         }
       }
     } else if(vx < 0) {
@@ -298,7 +300,8 @@ int eval_md_speed(int *m1s, int *m2s, int *rdd)
         } else if(v2 < 0) {
           v2=map(v2,0,v1,UCCB_MD_MINSPEED_REW,v1);
         } else {
-        	v2=0;
+//        	v2=0;
+          v2=UCCB_MD_MINSPEED_FWD;
         }
       } else {
         v2=-((long)v1*(vxn-g_fs_DC_LEFT))/g_fs_DC_LEFT;
@@ -307,7 +310,8 @@ int eval_md_speed(int *m1s, int *m2s, int *rdd)
         } else if(v2 < 0) {
           v2=map(v2,0,-abs(v1),UCCB_MD_MINSPEED_REW,-abs(v1));
         } else {
-        	v2=0;
+//        	v2=0;
+          v2=UCCB_MD_MINSPEED_FWD;
         }
       }
     } else {

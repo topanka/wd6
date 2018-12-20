@@ -93,29 +93,6 @@ void VNH5019MD::incSpeed(int step, int dir)
 //Serial.print("speed=");
 //Serial.println(_speed);
 
-/*
-  if(_speed >= 0) {
-    if(step >= 0) {
-      speed=_speed+step;
-    } else {
-      if(-step <= _speed) {
-        speed=_speed+step;
-      } else {
-        speed=0;
-      }
-    }
-  } else {
-    if(step >= 0) {
-      speed=_speed-step;
-    } else {
-      if(step > _speed) {
-        speed=_speed-step;
-      } else {
-        speed=0;
-      }
-    }
-  }
-*/  
   if(_speed >= 0) {
     speed=_speed+step;
     if(speed < 0) speed=0;
@@ -129,8 +106,8 @@ void VNH5019MD::incSpeed(int step, int dir)
     speed=60;
   }
 */  
-  if(speed < 60) {
-    speed=60;
+  if(speed < WD6_MIN_SPEED) {
+    speed=WD6_MIN_SPEED;
   }
 
   if(dir < 0) {
