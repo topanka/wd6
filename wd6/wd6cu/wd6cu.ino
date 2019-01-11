@@ -70,6 +70,8 @@ int16_t g_cb_m2s=0;
 
 uint16_t g_rpm_m1=0;
 uint16_t g_rpm_m2=0;
+uint16_t g_cur_m1=0;
+uint16_t g_cur_m2=0;
 int8_t g_dir_m1=0;
 int8_t g_dir_m2=0;
 
@@ -77,9 +79,15 @@ MYTMR g_tmr_checkmc={0};
 
 unsigned long g_mc_loopcps=0;
 
-int16_t g_mc_J1rpm=0;
-int16_t g_mc_B1rpm=0;
-int16_t g_mc_J2rpm=0;
-int16_t g_mc_B2rpm=0;
-int16_t g_mc_J3rpm=0;
-int16_t g_mc_B3rpm=0;
+uint16_t g_mc_J1rpm=0;
+uint16_t g_mc_B1rpm=0;
+uint16_t g_mc_J2rpm=0;
+uint16_t g_mc_B2rpm=0;
+uint16_t g_mc_J3rpm=0;
+uint16_t g_mc_B3rpm=0;
+uint16_t g_mc_J1cur=0;
+uint16_t g_mc_B1cur=0;
+uint16_t g_mc_J2cur=0;
+uint16_t g_mc_B2cur=0;
+uint16_t g_mc_J3cur=0;
+uint16_t g_mc_B3cur=0;

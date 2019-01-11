@@ -28,8 +28,7 @@ int tscr_comm_packtscr(uint16_t *len)
 {
   byte lead=WD6CUMC_MC_LEAD;
   byte crc8;
-  unsigned int m1c=0,m2c=0;
-  int16_t rpm1,rpm2;
+  uint16_t x;
   
   *len=0;
   
@@ -47,10 +46,22 @@ int tscr_comm_packtscr(uint16_t *len)
   wd6md_comm_pack1((byte*)&g_wd6md_B1.re->rpm,sizeof(uint16_t),g_wmd_commbuf,len);    //2:13
   wd6md_comm_pack1((byte*)&g_wd6md_B2.re->rpm,sizeof(uint16_t),g_wmd_commbuf,len);    //2:15
   wd6md_comm_pack1((byte*)&g_wd6md_B3.re->rpm,sizeof(uint16_t),g_wmd_commbuf,len);    //2:17
+  x=g_wd6md_J1.curr->getValue();
+  wd6md_comm_pack1((byte*)&x,sizeof(uint16_t),g_wmd_commbuf,len);    //2:19
+  x=g_wd6md_J2.curr->getValue();
+  wd6md_comm_pack1((byte*)&x,sizeof(uint16_t),g_wmd_commbuf,len);    //2:21
+  x=g_wd6md_J3.curr->getValue();
+  wd6md_comm_pack1((byte*)&x,sizeof(uint16_t),g_wmd_commbuf,len);    //2:23
+  x=g_wd6md_B1.curr->getValue();
+  wd6md_comm_pack1((byte*)&x,sizeof(uint16_t),g_wmd_commbuf,len);    //2:25
+  x=g_wd6md_B2.curr->getValue();
+  wd6md_comm_pack1((byte*)&x,sizeof(uint16_t),g_wmd_commbuf,len);    //2:27
+  x=g_wd6md_B3.curr->getValue();
+  wd6md_comm_pack1((byte*)&x,sizeof(uint16_t),g_wmd_commbuf,len);    //2:29
   crc8=getCRC(g_wmd_commbuf,*len);
-  wd6md_comm_pack1((byte*)&crc8,sizeof(crc8),g_wmd_commbuf,len);    //1:18
+  wd6md_comm_pack1((byte*)&crc8,sizeof(crc8),g_wmd_commbuf,len);    //1:30
   
-//18 byte long  
+//30 byte long  
   
   return(0);
 }

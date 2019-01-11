@@ -176,9 +176,12 @@ int cumc_comm_unpack1(unsigned char *d, unsigned int l, unsigned char *buf, unsi
 
 int cumc_comm_unpackuccb(unsigned char *buf, unsigned int len, 
                     unsigned long *loop_cps,
-                    int16_t *J1rpm, int16_t *B1rpm,
-                    int16_t *J2rpm, int16_t *B2rpm,
-                    int16_t *J3rpm, int16_t *B3rpm
+                    uint16_t *J1rpm, uint16_t *B1rpm,
+                    uint16_t *J2rpm, uint16_t *B2rpm,
+                    uint16_t *J3rpm, uint16_t *B3rpm,
+                    uint16_t *J1cur, uint16_t *B1cur,
+                    uint16_t *J2cur, uint16_t *B2cur,
+                    uint16_t *J3cur, uint16_t *B3cur
                     )
 {
   unsigned int l;
@@ -191,6 +194,12 @@ int cumc_comm_unpackuccb(unsigned char *buf, unsigned int len,
   cumc_comm_unpack1((unsigned char *)B1rpm,sizeof(uint16_t),buf,&l);
   cumc_comm_unpack1((unsigned char *)B2rpm,sizeof(uint16_t),buf,&l);
   cumc_comm_unpack1((unsigned char *)B3rpm,sizeof(uint16_t),buf,&l);
+  cumc_comm_unpack1((unsigned char *)J1cur,sizeof(uint16_t),buf,&l);
+  cumc_comm_unpack1((unsigned char *)J2cur,sizeof(uint16_t),buf,&l);
+  cumc_comm_unpack1((unsigned char *)J3cur,sizeof(uint16_t),buf,&l);
+  cumc_comm_unpack1((unsigned char *)B1cur,sizeof(uint16_t),buf,&l);
+  cumc_comm_unpack1((unsigned char *)B2cur,sizeof(uint16_t),buf,&l);
+  cumc_comm_unpack1((unsigned char *)B3cur,sizeof(uint16_t),buf,&l);
 
   return(0);
 }
@@ -207,11 +216,17 @@ int cumc_comm_recv(void)
     cumc_comm_unpackuccb(g_rmc_commbuf,g_rmc_len,
                     &g_mc_loopcps,
                     &g_mc_J1rpm,
-                    &g_mc_J2rpm,
-                    &g_mc_J3rpm,
                     &g_mc_B1rpm,
+                    &g_mc_J2rpm,
                     &g_mc_B2rpm,
-                    &g_mc_B3rpm
+                    &g_mc_J3rpm,
+                    &g_mc_B3rpm,
+                    &g_mc_J1cur,
+                    &g_mc_B1cur,
+                    &g_mc_J2cur,
+                    &g_mc_B2cur,
+                    &g_mc_J3cur,
+                    &g_mc_B3cur
                     );
 
 //Serial.print(g_mc_J3rpm);
@@ -219,6 +234,8 @@ int cumc_comm_recv(void)
 //Serial.println(g_mc_B3rpm);
     g_rpm_m1=(g_mc_J1rpm+g_mc_J2rpm+g_mc_J3rpm)/3;                  
     g_rpm_m2=(g_mc_B1rpm+g_mc_B2rpm+g_mc_B3rpm)/3;                  
+    g_cur_m1=(g_mc_J1cur+g_mc_J2cur+g_mc_J3cur)/3;                  
+    g_cur_m2=(g_mc_B1cur+g_mc_B2cur+g_mc_B3cur)/3;                  
 
 /*
                     Serial.print(g_tscr_power);

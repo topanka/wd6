@@ -45,6 +45,19 @@ void loop_counter(void)
     Serial.print(" ");
     Serial.println(g_wd6md_B3.re->rpm);
 
+    Serial.print(g_wd6md_J1.curr->getValue());
+    Serial.print(" ");
+    Serial.print(g_wd6md_J2.curr->getValue());
+    Serial.print(" ");
+    Serial.print(g_wd6md_J3.curr->getValue());
+    Serial.print(" ");
+    Serial.print(g_wd6md_B1.curr->getValue());
+    Serial.print(" ");
+    Serial.print(g_wd6md_B2.curr->getValue());
+    Serial.print(" ");
+    Serial.println(g_wd6md_B3.curr->getValue());
+
+    
     Serial.print("m1s: ");
     Serial.print(g_cb_m1s);
     Serial.print(" m2s:");
@@ -63,10 +76,11 @@ void loop_counter(void)
 void setup()
 {
 
-  delay(500);
+//  delay(500);
   
-pinMode(LED_BUILTIN, OUTPUT);
-digitalWrite(LED_BUILTIN, HIGH);
+digitalWrite(LED_BUILTIN,HIGH);
+delay(200);
+pinMode(LED_BUILTIN,OUTPUT);
 
   smar_setup();
 //digitalWrite(LED_BUILTIN, HIGH);

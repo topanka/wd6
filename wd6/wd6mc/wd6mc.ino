@@ -28,12 +28,20 @@ WD6MD g_wd6md_B1={0};
 WD6MD g_wd6md_B2={0};
 WD6MD g_wd6md_B3={0};
 
+/*
 ResponsiveAnalogRead g_rar_J1(A1,true);
 ResponsiveAnalogRead g_rar_J2(A2,true);
 ResponsiveAnalogRead g_rar_J3(A3,true);
 ResponsiveAnalogRead g_rar_B1(A4,true);
 ResponsiveAnalogRead g_rar_B2(A5,true);
 ResponsiveAnalogRead g_rar_B3(A6,true);
+*/
+ResponsiveAnalogRead g_rar_J1(0,true);
+ResponsiveAnalogRead g_rar_J2(0,true);
+ResponsiveAnalogRead g_rar_J3(0,true);
+ResponsiveAnalogRead g_rar_B1(0,true);
+ResponsiveAnalogRead g_rar_B2(0,true);
+ResponsiveAnalogRead g_rar_B3(0,true);
 
 //general
 unsigned long g_millis=0;

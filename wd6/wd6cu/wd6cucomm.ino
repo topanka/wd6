@@ -28,7 +28,6 @@ int comm_packsh1(uint16_t *len)
 {
   byte lead=UCCB_WD6CU_LEAD;
   byte crc8;
-  uint16_t m1c=0,m2c=0;
   int16_t rpm1,rpm2;
   
   *len=0;
@@ -49,8 +48,8 @@ int comm_packsh1(uint16_t *len)
   comm_pack1((byte*)&g_loop_cps,sizeof(g_loop_cps),g_w_commbuf,len);    //4:5
   comm_pack1((byte*)&g_battV,sizeof(g_battV),g_w_commbuf,len);    //2:7
   comm_pack1((byte*)&g_battA,sizeof(g_battA),g_w_commbuf,len);    //2:9
-  comm_pack1((byte*)&m1c,sizeof(m1c),g_w_commbuf,len);    //2:11
-  comm_pack1((byte*)&m2c,sizeof(m2c),g_w_commbuf,len);    //2:13
+  comm_pack1((byte*)&g_cur_m1,sizeof(g_cur_m1),g_w_commbuf,len);    //2:11
+  comm_pack1((byte*)&g_cur_m2,sizeof(g_cur_m2),g_w_commbuf,len);    //2:13
   comm_pack1((byte*)&rpm1,sizeof(rpm1),g_w_commbuf,len);    //2:15
   comm_pack1((byte*)&rpm2,sizeof(rpm2),g_w_commbuf,len);    //2:17
   comm_pack1((byte*)&g_temperature,sizeof(g_temperature),g_w_commbuf,len);    //2:19

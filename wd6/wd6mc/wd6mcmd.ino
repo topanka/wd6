@@ -1,6 +1,6 @@
 #define WD6_MIN_NZ_SPEED        ((WD6_MIN_SPEED)+4)
 
-#define WD6_MIN_RPM   7
+#define WD6_MIN_RPM   6
 #define WD6_MAX_RPM   90
 
 int wd6md_setup(void)
@@ -71,11 +71,17 @@ int wd6md_setrpm(WD6MD *wd6md, int rpm, int dir)
   rpmd=abs(rpmd);
 //Serial.print(rpmd);
 //Serial.print(" ");
-  if(rpmd <= 1) stp=1;
-  else if(rpmd <= 2) stp=2;
-  else if(rpmd <= 3) stp=4;
-  else if(rpmd <= 10) stp=rpmd*2;
-  else stp=rpmd*3;
+
+  if(wd6md->re->rpm == 0) {
+    stp=4;
+  } else {
+    if(rpmd <= 1) stp=1;
+    else if(rpmd <= 2) stp=2;
+    else if(rpmd <= 3) stp=4;
+    else if(rpmd <= 10) stp=rpmd*2;
+    else stp=rpmd*3;
+  }
+  
   stp=stp*sd;
 
 /*
@@ -97,6 +103,7 @@ int wd6md_readcurrent(void)
 {
   static char l_idx=0;
   WD6MD *wd6md;
+  unsigned int mc;
 
   if(tmr_do(&g_tmr_rmc) != 1) return(0);
   if(l_idx == 0) {
@@ -112,7 +119,9 @@ int wd6md_readcurrent(void)
   } else if(l_idx == 5) {
     wd6md=&g_wd6md_B3;  
   } else return(-1);
-  wd6md->curr->update();
+//  wd6md->curr->update();
+  mc=wd6md->md->getCurrentMilliamps();  
+  wd6md->curr->update(mc);
   if(wd6md->curr->getRawValue() > 4000) {
     if(wd6md->overloaded < 10) wd6md->overloaded++;
   } else {
@@ -120,6 +129,8 @@ int wd6md_readcurrent(void)
   }
   l_idx++;
   l_idx%=6;
+
+  return(0);
 } 
 
 int  wd6md_setspeed1(int16_t ms, int16_t *ms_p, WD6MD *wd6md1, WD6MD *wd6md2, WD6MD *wd6md3)
@@ -150,6 +161,8 @@ int  wd6md_setspeed1(int16_t ms, int16_t *ms_p, WD6MD *wd6md1, WD6MD *wd6md2, WD
     if(abs(ms) <= WD6_MIN_NZ_SPEED) {
       rpm=WD6_MIN_RPM;
     }
+//    Serial.print("RPM: ");
+//    Serial.println(rpm);
     wd6md_setrpm(wd6md1,rpm,dir);
     wd6md_setrpm(wd6md2,rpm,dir);
     wd6md_setrpm(wd6md3,rpm,dir);
