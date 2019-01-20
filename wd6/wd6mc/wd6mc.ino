@@ -79,3 +79,6 @@ int16_t g_cb_b6pBE=-1;
 int16_t g_cb_m1s=0;
 int16_t g_cb_m2s=0;
 int16_t g_cb_rdd=0;
+
+int8_t g_wd6md_am=0;
+int8_t g_wd6md_am_go=0;

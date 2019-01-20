@@ -2,7 +2,8 @@
 
 byte g_wmd_commbuf[100]={0};
 unsigned long g_wmd_sendtime=0;
-unsigned long g_wmd_commpkt_counter=0;        //total counter of sent packets
+unsigned long g_wmd_commpkt_send_counter=0;        //total counter of sent packets
+unsigned long g_wmd_commpkt_recv_counter=0;        //total counter of received packets
 
 byte g_rmd_commbuf[100]={0};
 int g_rmd_state=WD6CUMC_PST_INIT;
@@ -24,7 +25,7 @@ int wd6md_comm_pack1(byte *d, uint16_t l, byte *buf, uint16_t *len)
   return(0);
 }
 
-int tscr_comm_packtscr(uint16_t *len)
+int wd6md_comm_packtscr(uint16_t *len)
 {
   byte lead=WD6CUMC_MC_LEAD;
   byte crc8;
@@ -69,24 +70,24 @@ int tscr_comm_packtscr(uint16_t *len)
 int comm_send(void)
 {
   unsigned int len;
-
+  
   if(g_force_send == 0) {
     if(tmr_do(&g_tmr_comm) != 1) return(0);
   }
   g_force_send=0;
   
-  tscr_comm_packtscr(&len);
+  wd6md_comm_packtscr(&len);
   
   Serial2.write((byte*)&g_wmd_commbuf[0],len);
   
-  g_wmd_commpkt_counter=0;
+  g_wmd_commpkt_send_counter++;
 
   return(1);
 }
 
 int comm_read(int *state, unsigned char *buf, unsigned int *len)
 {
-  int rval=-1,ret,nr=0;
+  int rval=-1,ret,nr=0,i;
   unsigned char c1;
   unsigned char crc8;
 //  static unsigned long xx=0;
@@ -150,11 +151,21 @@ int comm_read(int *state, unsigned char *buf, unsigned int *len)
         
 //        xx++;
 //  Serial.print(xx);
+
 /*
   Serial.print("crc= ");
+  Serial.print(millis());
+  Serial.print(" ");
+  Serial.print(*len);
+  Serial.print(" ");
   Serial.print(c1);
   Serial.print(" ");
   Serial.println(crc8);
+  for(i=0;i < *len;i++) {
+    Serial.print(buf[i]);
+    Serial.print(" ");
+  }
+   Serial.println();
 */  
         if(crc8 != c1) {
           *state=WD6CUMC_PST_INIT;
@@ -226,9 +237,11 @@ int comm_recv(void)
   ret=comm_read(&g_rmd_state,g_rmd_commbuf,&g_rmd_len);
   
   if(ret == WD6CUMC_PST_READY) {
+    g_wmd_commpkt_recv_counter++;
+    if(g_wmd_commpkt_recv_counter < 5) return(0);
 
-
-//Serial.println("read from central");
+//Serial.print("read from central: ");
+//Serial.println(millis());
     
     comm_unpackcu(g_rmd_commbuf,g_rmd_len,
                   &g_wcu_commpkt_counter,
@@ -246,7 +259,16 @@ int comm_recv(void)
                   &g_cb_m1s,
                   &g_cb_m2s,
                   &g_cb_rdd);
-  
+
+/*                  
+if(g_cb_m1s > 500) {  
+  Serial.print("xxm1s: ");
+  Serial.print(g_rmd_len);
+  Serial.print(" ");
+  Serial.println(g_cb_m1s);
+}
+*/
+
     return(1);
   }
 

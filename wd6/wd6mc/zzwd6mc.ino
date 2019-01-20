@@ -6,8 +6,8 @@ void loop_counter(void)
     
     Serial.print("loopcps ");
     Serial.println(g_loop_cps);
-//    Serial.print("fsY ");
-//    Serial.println(g_cb_fsY);
+//    Serial.print("battV: ");
+//    Serial.println(g_cb_battV);
 
 /*    
     Serial.print("J1 curr: ");
@@ -19,7 +19,7 @@ void loop_counter(void)
     Serial.print("\t");
     Serial.println(g_wd6md_J2.curr->getValue());    
 */    
-
+/*
     Serial.print(g_wd6md_J1.md->getSpeed());
     Serial.print(" ");
     Serial.print(g_wd6md_J2.md->getSpeed());
@@ -31,8 +31,8 @@ void loop_counter(void)
     Serial.print(g_wd6md_B2.md->getSpeed());
     Serial.print(" ");
     Serial.println(g_wd6md_B3.md->getSpeed());
-    
-    
+*/    
+/*    
     Serial.print(g_wd6md_J1.re->rpm);
     Serial.print(" ");
     Serial.print(g_wd6md_J2.re->rpm);
@@ -44,25 +44,26 @@ void loop_counter(void)
     Serial.print(g_wd6md_B2.re->rpm);
     Serial.print(" ");
     Serial.println(g_wd6md_B3.re->rpm);
-
-    Serial.print(g_wd6md_J1.curr->getValue());
+*/
+/*
+    Serial.print(g_wd6md_J1.curr->getRawValue());
     Serial.print(" ");
-    Serial.print(g_wd6md_J2.curr->getValue());
+    Serial.print(g_wd6md_J2.curr->getRawValue());
     Serial.print(" ");
-    Serial.print(g_wd6md_J3.curr->getValue());
+    Serial.print(g_wd6md_J3.curr->getRawValue());
     Serial.print(" ");
-    Serial.print(g_wd6md_B1.curr->getValue());
+    Serial.print(g_wd6md_B1.curr->getRawValue());
     Serial.print(" ");
-    Serial.print(g_wd6md_B2.curr->getValue());
+    Serial.print(g_wd6md_B2.curr->getRawValue());
     Serial.print(" ");
-    Serial.println(g_wd6md_B3.curr->getValue());
-
-    
+    Serial.println(g_wd6md_B3.curr->getRawValue());
+*/
+/*
     Serial.print("m1s: ");
     Serial.print(g_cb_m1s);
     Serial.print(" m2s:");
     Serial.println(g_cb_m2s);    
-   
+*/   
 
     g_force_send=1;
     comm_send();
@@ -107,11 +108,19 @@ pinMode(LED_BUILTIN,OUTPUT);
   delay(1000);
   g_loop_ct=millis();
   Serial.println("Motor controller ready!");
+
+  g_wd6md_am=0;
+  g_wd6md_am_go=0;
+ 
 }
 
 void loop()
 {
   int rpm,dir,speed;
+  int ret;
+  static int goidx=0;
+  unsigned long godist[3]={80,50,30};
+  int gospeed[3]={100,-150,-100};
   
   loop_counter();
   
@@ -167,6 +176,20 @@ void loop()
 
 //  wd6md_setspeedx();
 
-  wd6md_setspeed();
+//  wd6md_go(50,-100);
+  if(goidx < 3) {
+    ret=wd6md_go(godist[goidx],gospeed[goidx]);
+    if(ret == 1) {
+      g_wd6md_am_go=1;
+      goidx++;
+      delay(100);
+    }
+  } else {
+    g_wd6md_am=0;
+  }
+
+  if(g_wd6md_am == 0) {
+    wd6md_setspeed(g_cb_m1s,g_cb_m2s);
+  }
   wd6cumd_comm();
 }

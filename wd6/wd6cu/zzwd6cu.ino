@@ -17,7 +17,8 @@ void loop_counter(void)
 
 void setup()
 {
-  delay(1000);
+  pinMode(RESET_MD_PIN,INPUT_PULLUP);
+  delay(500);
   analogReadResolution(10); 
   smar_setup();
   batt_setup();
@@ -30,7 +31,12 @@ void setup()
   cumc_comm_setup();
   
   Serial.begin(115200);
- 
+
+  pinMode(RESET_MD_PIN,OUTPUT);
+  digitalWrite(RESET_MD_PIN,LOW);
+  delay(10);
+  pinMode(RESET_MD_PIN,INPUT_PULLUP);
+  
   delay(2000);
   g_loop_ct=millis();
 }

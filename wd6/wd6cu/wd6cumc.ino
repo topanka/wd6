@@ -55,8 +55,8 @@ int cumc_comm_packuccb(int16_t fsBE, int16_t b6pBE, uint16_t *len)
   
   crc8=getCRC(g_wmc_commbuf,*len);
   
-//Serial.print("crc8 ");  
-//Serial.println(crc8);  
+//Serial.print("m1s: ");  
+//Serial.println(g_cb_m1s);  
   
   cumc_comm_pack1((byte*)&crc8,sizeof(crc8),g_wmc_commbuf,len);    //1:34
   
@@ -79,10 +79,10 @@ int cumc_comm_send(void)
   if((g_millis < g_wmc_sendtime+50) &&
      (l_b6pBE == 0) &&
      (l_fsBE == 0)) return(0);
-/*
-Serial.print("write to motor");
-Serial.println(g_cb_fsY);
-*/
+
+//Serial.print("write to motor: ");
+//Serial.println(millis());
+
   g_wmc_sendtime=g_millis;
   cumc_comm_packuccb(l_fsBE,l_b6pBE,&len);
   Serial1.write((byte*)&g_wmc_commbuf[0],len);

@@ -8,6 +8,8 @@
 
 #define WD6CU_VERSION        "1.0.2"
 
+#define RESET_MD_PIN                 2
+
 //battery
 #define UCCB_BATTV_PORT              A16
 #define UCCB_BATTA_PORT              A17

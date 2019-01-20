@@ -58,6 +58,13 @@ int wd6md_setrpm(WD6MD *wd6md, int rpm, int dir)
   if(tmr_do(&wd6md->tmr_rpm) != 1) return(0);
   wd6md->curr->update();
   if(wd6md->re->rpm == rpm) return(0);
+
+/*
+  if(wd6md->re->rpm == 0){
+    if(wd6md->tmr_rpm.cnt%2 == 0) return(0);
+  }
+*/  
+  
 //Serial.print(wd6md->name);
   if(wd6md->re->rpm < rpm) {
     sd=1;
@@ -189,13 +196,51 @@ int  wd6md_setspeed1(int16_t ms, int16_t *ms_p, WD6MD *wd6md1, WD6MD *wd6md2, WD
   return(0);
 }
 
-int  wd6md_setspeed(void)
+int wd6md_go(unsigned long dist, int speed)
+{
+  WD6MD *wd6md1;
+  long x;
+  uint8_t ic;
+  
+  if(g_wd6md_am == 0) {
+//    wd6md_setspeed(0,0);
+    return(0);
+  }
+  if(g_wd6md_am_go == 0) {
+    wd6md_setspeed(0,0);
+    return(0);
+  }
+  wd6md1=&g_wd6md_J1;
+  if(wd6md1->am.go == 0) {
+    wd6md1->am.go=1;
+    wd6md1->am.ics=1;
+    wd6md1->am.ic=wd6md1->re->ic;
+  } else {
+    ic=wd6md1->re->ic;
+    x=(long)ic-wd6md1->am.ic;
+    if(x < 0) x+=256;
+    wd6md1->am.ic=ic;
+    wd6md1->am.ics+=x;
+  }
+  wd6md_setspeed(speed,speed);
+    
+  if(wd6md1->am.ics >= (abs(dist)/1.57)) {
+    wd6md_setspeed(0,0);
+    wd6md1->am.go=0;
+    g_wd6md_am_go=0;
+    return(1);
+  }
+
+  return(0);
+}
+
+int  wd6md_setspeed(int16_t m1s, int16_t m2s)
 {
   static int16_t l_m1s=0;
   static int16_t l_m2s=0;
 
-  wd6md_setspeed1(g_cb_m1s,&l_m1s,&g_wd6md_J1,&g_wd6md_J2,&g_wd6md_J3);
-  wd6md_setspeed1(g_cb_m2s,&l_m2s,&g_wd6md_B1,&g_wd6md_B2,&g_wd6md_B3);
+  wd6md_setspeed1(m1s,&l_m1s,&g_wd6md_J1,&g_wd6md_J2,&g_wd6md_J3);
+  wd6md_setspeed1(m2s,&l_m2s,&g_wd6md_B1,&g_wd6md_B2,&g_wd6md_B3);
 
   return(0);
 }
