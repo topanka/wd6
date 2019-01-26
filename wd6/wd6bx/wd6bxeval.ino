@@ -281,7 +281,7 @@ int eval_md_speed(int *m1s, int *m2s, int *rdd)
           v2=UCCB_MD_MINSPEED_FWD;
         }
       } else {
-        v2=-((long)v1*(vxn-g_fs_DC_RIGHT))/g_fs_DC_RIGHT;
+        v2=-((long)2*v1*(vxn-g_fs_DC_RIGHT))/g_fs_DC_RIGHT;   //itt 3* is lehetne, mert a g_fs_DC_RIGHT 3/4-e a feltengelynek
         if(v2 > 0) {
           v2=map(v2,0,abs(v1),UCCB_MD_MINSPEED_FWD,abs(v1));
         } else if(v2 < 0) {
@@ -301,7 +301,7 @@ int eval_md_speed(int *m1s, int *m2s, int *rdd)
           v2=UCCB_MD_MINSPEED_FWD;
         }
       } else {
-        v2=-((long)v1*(vxn-g_fs_DC_LEFT))/g_fs_DC_LEFT;
+        v2=-((long)2*v1*(vxn-g_fs_DC_LEFT))/g_fs_DC_LEFT;
         if(v2 > 0) {
           v2=map(v2,0,abs(v1),UCCB_MD_MINSPEED_FWD,abs(v1));
         } else if(v2 < 0) {

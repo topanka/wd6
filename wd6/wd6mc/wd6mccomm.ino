@@ -268,7 +268,6 @@ if(g_cb_m1s > 500) {
   Serial.println(g_cb_m1s);
 }
 */
-
     return(1);
   }
 

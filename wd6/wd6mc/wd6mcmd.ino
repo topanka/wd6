@@ -196,16 +196,12 @@ int  wd6md_setspeed1(int16_t ms, int16_t *ms_p, WD6MD *wd6md1, WD6MD *wd6md2, WD
   return(0);
 }
 
-int wd6md_go(unsigned long dist, int speed)
+int wd6md_am_go(unsigned long dist, int ms)
 {
   WD6MD *wd6md1;
   long x;
   uint8_t ic;
   
-  if(g_wd6md_am == 0) {
-//    wd6md_setspeed(0,0);
-    return(0);
-  }
   if(g_wd6md_am_go == 0) {
     wd6md_setspeed(0,0);
     return(0);
@@ -222,8 +218,7 @@ int wd6md_go(unsigned long dist, int speed)
     wd6md1->am.ic=ic;
     wd6md1->am.ics+=x;
   }
-  wd6md_setspeed(speed,speed);
-    
+  wd6md_setspeed(ms,ms);
   if(wd6md1->am.ics >= (abs(dist)/1.57)) {
     wd6md_setspeed(0,0);
     wd6md1->am.go=0;
@@ -234,13 +229,64 @@ int wd6md_go(unsigned long dist, int speed)
   return(0);
 }
 
-int  wd6md_setspeed(int16_t m1s, int16_t m2s)
+int wd6md_am(void)
+{
+  int ret;
+  unsigned long godist[3]={80,50,30};
+  int gospeed[3]={100,-150,-100};
+  
+  if(g_cb_b6pBE == 11) {
+    g_wd6md_am=1;
+    g_wd6md_am_go=1;
+    g_wd6md_am_goidx=0;
+    return(0);
+  }      
+  if(g_cb_b6pBE == 41) {
+    g_wd6md_am=0;
+    g_wd6md_am_go=0;
+    g_wd6md_am_goidx=-1;
+    return(0);
+  }      
+  if(g_wd6md_am == 0) return(0);
+  if((g_wd6md_am_goidx >= sizeof(godist)/sizeof(godist[0])) || (g_wd6md_am_goidx < 0)) {
+    g_wd6md_am=0;
+    g_wd6md_am_go=0;
+    g_wd6md_am_goidx=-1;
+    return(0);
+  }
+  ret=wd6md_am_go(godist[g_wd6md_am_goidx],gospeed[g_wd6md_am_goidx]);
+  if(ret == 1) {
+    g_wd6md_am_go=1;
+    g_wd6md_am_goidx++;
+    delay(100);
+  } 
+
+  return(0);
+}
+
+int wd6md_setspeed(int16_t m1s, int16_t m2s)
 {
   static int16_t l_m1s=0;
   static int16_t l_m2s=0;
 
   wd6md_setspeed1(m1s,&l_m1s,&g_wd6md_J1,&g_wd6md_J2,&g_wd6md_J3);
   wd6md_setspeed1(m2s,&l_m2s,&g_wd6md_B1,&g_wd6md_B2,&g_wd6md_B3);
+
+  return(0);
+}
+
+int  wd6md_mm(void)
+{
+  if((g_wd6md_am != 0) && ((g_cb_m1s != 0) || (g_cb_m2s != 0))) {
+    g_wd6md_am=0;
+    g_wd6md_am_go=0;
+    g_wd6md_am_goidx=-1;
+    wd6md_setspeed(0,0);
+    return(0);
+  }
+  if(g_wd6md_am == 1) return(0);
+  
+  wd6md_setspeed(g_cb_m1s,g_cb_m2s);
 
   return(0);
 }

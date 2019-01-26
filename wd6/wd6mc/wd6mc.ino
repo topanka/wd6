@@ -82,3 +82,4 @@ int16_t g_cb_rdd=0;
 
 int8_t g_wd6md_am=0;
 int8_t g_wd6md_am_go=0;
+int g_wd6md_am_goidx=-1;

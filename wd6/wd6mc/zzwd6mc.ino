@@ -117,10 +117,6 @@ pinMode(LED_BUILTIN,OUTPUT);
 void loop()
 {
   int rpm,dir,speed;
-  int ret;
-  static int goidx=0;
-  unsigned long godist[3]={80,50,30};
-  int gospeed[3]={100,-150,-100};
   
   loop_counter();
   
@@ -177,19 +173,8 @@ void loop()
 //  wd6md_setspeedx();
 
 //  wd6md_go(50,-100);
-  if(goidx < 3) {
-    ret=wd6md_go(godist[goidx],gospeed[goidx]);
-    if(ret == 1) {
-      g_wd6md_am_go=1;
-      goidx++;
-      delay(100);
-    }
-  } else {
-    g_wd6md_am=0;
-  }
+  wd6md_am();
 
-  if(g_wd6md_am == 0) {
-    wd6md_setspeed(g_cb_m1s,g_cb_m2s);
-  }
+  wd6md_mm();
   wd6cumd_comm();
 }
