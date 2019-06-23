@@ -32,7 +32,6 @@ void setup()
   uccb_clb_load();
   tscr_setup();
   delay(1000);
-
   uccb_clb_autocenter_TS();
   uccb_clb_autocenter_FS();
   eval_setup();

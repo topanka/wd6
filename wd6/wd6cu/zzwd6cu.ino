@@ -6,8 +6,8 @@ void loop_counter(void)
     g_loop_cnt=0;
     g_loop_ct=g_millis;
 
-    Serial.print("loopcps ");
-    Serial.println(g_loop_cps);
+//    Serial.print("loopcps ");
+//    Serial.println(g_loop_cps);
 //    Serial.print("battV ");
 //    Serial.println(g_battV);
 
@@ -25,9 +25,11 @@ void setup()
 //  md_setup();
   eval_setup();
   comm_setup();
-//  servo_setup();
+  servo_setup();
   light_setup();
   temp_setup();
+  piro_setup();
+//  vl53l1_setup();
   cumc_comm_setup();
   
   Serial.begin(115200);
@@ -36,8 +38,10 @@ void setup()
   digitalWrite(RESET_MD_PIN,LOW);
   delay(10);
   pinMode(RESET_MD_PIN,INPUT_PULLUP);
-  
-  delay(2000);
+
+//  delay(1000);
+//  um6_setup();
+  delay(1000);
   g_loop_ct=millis();
 }
 
@@ -47,7 +51,7 @@ void loop()
   loop_counter();
   
   batt_read(&g_battV,&g_battA);
-  temp_read();
+//  temp_read();
   bxcu_comm();
   eval_doit();
   cumc_comm();

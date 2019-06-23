@@ -1,4 +1,3 @@
-#include <Servo.h> 
 #include <wd6st.h>
 #include <uccbar.h>
 #include <uccbbtn.h>
@@ -6,10 +5,18 @@
 #include <sh1tmr.h>
 #include <fim5360.h>
 
+#include <Servo.h> 
 #include <LiquidCrystal.h>
 #include <Keypad.h>
 #include <RunningAverage.h>
 #include <umpmega.h>
+
+int uccbbtn_init(UCCBBTN *btn, uint8_t port, int nlg);
+int uccb_btn_check(UCCBBTN *btn, int *ev);
+int smar_analogRead(SMAR *smar);
+int smar_init(SMAR *smar, uint8_t loc, int port, uint8_t avn, unsigned int eqn, uint8_t vcmin);
+int smar_reset(SMAR *smar);
+int scr_calib_clb(int dir, int *val, int c_val, int cp, eepromsave_ft eepromsave_f);
 
 #define UCCB_VERSION        "1.3.7"
 

@@ -54,9 +54,11 @@ int cumc_comm_packuccb(int16_t fsBE, int16_t b6pBE, uint16_t *len)
   cumc_comm_pack1((byte*)&g_cb_rdd,sizeof(g_cb_rdd),g_wmc_commbuf,len);    //2:33-1+7
   
   crc8=getCRC(g_wmc_commbuf,*len);
-  
-//Serial.print("m1s: ");  
-//Serial.println(g_cb_m1s);  
+
+/*  
+Serial.print("m1s: ");  
+Serial.println(g_cb_m1s);  
+*/
   
   cumc_comm_pack1((byte*)&crc8,sizeof(crc8),g_wmc_commbuf,len);    //1:34
   
@@ -252,6 +254,45 @@ int cumc_comm(void)
 {
   cumc_comm_send();
   cumc_comm_recv();
+
+  return(0);
+}
+
+int cumc_follow(int diff)
+{
+  int d;
+  
+//  if(diff != 0) {
+//    Serial.println(diff);
+//  }
+  
+/*  
+  if(diff > 0) {
+    g_cb_m1s=-100;
+    g_cb_m2s=100;
+  } else if(diff < 0) {
+    g_cb_m1s=100;
+    g_cb_m2s=-100;
+  } else {
+    g_cb_m1s=0;
+    g_cb_m2s=0;
+  }
+*/  
+
+  if(diff > 0) {
+    if(diff > 6) diff=6;
+    d=map(diff,1,6,100,200);
+    g_cb_m1s=-d;
+    g_cb_m2s=d;
+  } else if(diff < 0) {
+    if(diff < -6) diff=-6;
+    d=map(-diff,1,6,100,200);
+    g_cb_m1s=d;
+    g_cb_m2s=-d;
+  } else {
+    g_cb_m1s=0;
+    g_cb_m2s=0;
+  }
 
   return(0);
 }

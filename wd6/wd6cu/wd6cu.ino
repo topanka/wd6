@@ -1,10 +1,16 @@
-//#include <Servo.h>
-
 #include <wd6st.h>
 #include <sh1tmr.h>
 #include <uccbcrc.h>
+#include <um6.h>
+#include <piro.h>
 
 #include <RunningAverage.h>
+#include <Servo.h>
+#include <Wire.h>
+
+//#include <vl53l1_api.h>
+//#include "SparkFun_VL53L1X.h"
+#include "VL53L1X.h"
 
 #define WD6CU_VERSION        "1.0.2"
 
@@ -93,3 +99,12 @@ uint16_t g_mc_J2cur=0;
 uint16_t g_mc_B2cur=0;
 uint16_t g_mc_J3cur=0;
 uint16_t g_mc_B3cur=0;
+
+//piro
+#define WD6CU_PIRO_LEFT   A11
+#define WD6CU_PIRO_RIGHT  A10
+
+MYTMR g_tmr_piro={0};
+int g_piro_scan=PIRO_SCAN_START;
+unsigned long g_piro_scan_start_t0=0;
+unsigned long g_piro_scan_stop_t0=0;

@@ -239,7 +239,7 @@ int comm_unpackuccb(unsigned char *buf, unsigned long len,
 int comm_recv(void)
 {
   int ret;
-  int16_t stb;
+  int16_t stb,m1s,m2s;
 
   g_recv_ready=0;
   if(g_commmode == 0) return(0);
@@ -260,18 +260,34 @@ int comm_recv(void)
                     &stb,
                     &g_cb_b6pBS,
                     &g_cb_b6pBE,
-                    &g_cb_m1s,
-                    &g_cb_m2s,
+                    &m1s,
+                    &m2s,
                     &g_cb_rdd,
                     &g_cb_tsxp,
                     &g_cb_tsyp,
                     &g_commmode);
 
     g_cb_sw10p=stb&UCCB_ST_SW10P;
-    if((int)(stb&UCCB_ST_M1) == 0) g_cb_m1s=0;
-    if((int)(stb&UCCB_ST_M2) == 0) g_cb_m2s=0;
+    if((int)(stb&UCCB_ST_M1) == 0) {
+      m1s=0;
+      g_cb_m1s=0;
+    }
+    if((int)(stb&UCCB_ST_M2) == 0) {
+      m2s=0;
+      g_cb_m2s=0;
+    }
     g_cb_lightpos=(int)((stb&UCCB_ST_POSLIGHT)>>UCCB_PL_STPOS);
-
+    
+    if(g_piro_scan == PIRO_MOTOR_FOLLOW) {
+      if((m1s != 0) || (m2s != 0)) {
+        g_piro_scan=PIRO_SCAN_STOP;
+        g_cb_m1s=m1s;
+        g_cb_m2s=m2s;
+      }
+    } else {
+      g_cb_m1s=m1s;
+      g_cb_m2s=m2s;
+    }
 /*
 Serial.print("fsY=");
 Serial.println(g_cb_fsY);

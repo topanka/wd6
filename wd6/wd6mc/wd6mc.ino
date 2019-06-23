@@ -7,6 +7,11 @@
 #include "uccbcrc.h"
 #include "ResponsiveAnalogRead.h"
 
+int wd6re_readrpm(WD6MD *wd6md);
+int wd6md_setrpm(WD6MD *wd6md, int rpm, int dir);
+int  wd6md_setspeed1(int16_t ms, int16_t *ms_p, WD6MD *wd6md1, WD6MD *wd6md2, WD6MD *wd6md3);
+uint16_t qe_rpm_tbi(WD6RE *wd6re);
+
 VNH5019MD g_md_J1(47,48,6,42,43,A1,&OCR4A,0,wd6re_isrJ1);
 VNH5019MD g_md_J2(24,25,7,22,23,A2,&OCR4B,1,wd6re_isrJ2);
 VNH5019MD g_md_J3(28,29,8,26,27,A3,&OCR4C,5,wd6re_isrJ3);

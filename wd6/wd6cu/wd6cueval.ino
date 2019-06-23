@@ -23,6 +23,13 @@ int eval_doit(void)
 //    md_go();
   }      
   
+  if((g_cb_b6pBE == 21) && (g_recv_ready == 1)) {
+    g_piro_scan=PIRO_SCAN_START;
+  }      
+  if((g_cb_b6pBE == 61) && (g_recv_ready == 1)) {
+    g_piro_scan=PIRO_SCAN_STOP;
+  }      
+  
 #if 0  
   if(g_cb_fsBE != 0) {
       digitalWrite(13,HIGH);
@@ -37,7 +44,9 @@ int eval_doit(void)
   
   //md_setspeed();
   //servo_rudder();
-  //servo_holder();
+  servo_holder();
+  piro_doit();
+//  vl53l1_read();
   
 /*  
   if(g_cb_b6pBE == 11) {

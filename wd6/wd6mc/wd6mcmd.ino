@@ -196,7 +196,7 @@ int  wd6md_setspeed1(int16_t ms, int16_t *ms_p, WD6MD *wd6md1, WD6MD *wd6md2, WD
   return(0);
 }
 
-int wd6md_am_go(unsigned long dist, int ms)
+int wd6md_am_go(unsigned long dist, int16_t msr, int16_t msl)
 {
   WD6MD *wd6md1;
   long x;
@@ -206,7 +206,7 @@ int wd6md_am_go(unsigned long dist, int ms)
     wd6md_setspeed(0,0);
     return(0);
   }
-  wd6md1=&g_wd6md_J1;
+  wd6md1=&g_wd6md_J2;
   if(wd6md1->am.go == 0) {
     wd6md1->am.go=1;
     wd6md1->am.ics=1;
@@ -218,7 +218,7 @@ int wd6md_am_go(unsigned long dist, int ms)
     wd6md1->am.ic=ic;
     wd6md1->am.ics+=x;
   }
-  wd6md_setspeed(ms,ms);
+  wd6md_setspeed(msr,msl);
   if(wd6md1->am.ics >= (abs(dist)/1.57)) {
     wd6md_setspeed(0,0);
     wd6md1->am.go=0;
@@ -229,11 +229,29 @@ int wd6md_am_go(unsigned long dist, int ms)
   return(0);
 }
 
+int wd6md_am_turn(unsigned long turn, int16_t ms)
+{
+  unsigned long dist;
+
+  dist=3;
+  if(ms >= 0) {
+    wd6md_am_go(dist,ms,-ms);
+  } else {
+    wd6md_am_go(dist,-ms,ms);
+  }
+
+  return(0);
+}
+
 int wd6md_am(void)
 {
   int ret;
-  unsigned long godist[3]={80,50,30};
-  int gospeed[3]={100,-150,-100};
+  WD6MDTRACE tr[3]={
+    {300.0,400,400},
+    {200.0,-400,-400},
+    {100.0,-150,-150}
+//    {30,-100,-100}
+  };
   
   if(g_cb_b6pBE == 11) {
     g_wd6md_am=1;
@@ -248,13 +266,13 @@ int wd6md_am(void)
     return(0);
   }      
   if(g_wd6md_am == 0) return(0);
-  if((g_wd6md_am_goidx >= sizeof(godist)/sizeof(godist[0])) || (g_wd6md_am_goidx < 0)) {
+  if((g_wd6md_am_goidx >= sizeof(tr)/sizeof(tr[0])) || (g_wd6md_am_goidx < 0)) {
     g_wd6md_am=0;
     g_wd6md_am_go=0;
     g_wd6md_am_goidx=-1;
     return(0);
   }
-  ret=wd6md_am_go(godist[g_wd6md_am_goidx],gospeed[g_wd6md_am_goidx]);
+  ret=wd6md_am_go(tr[g_wd6md_am_goidx].dist,tr[g_wd6md_am_goidx].msr,tr[g_wd6md_am_goidx].msl);
   if(ret == 1) {
     g_wd6md_am_go=1;
     g_wd6md_am_goidx++;
@@ -264,13 +282,13 @@ int wd6md_am(void)
   return(0);
 }
 
-int wd6md_setspeed(int16_t m1s, int16_t m2s)
+int wd6md_setspeed(int16_t msr, int16_t msl)
 {
   static int16_t l_m1s=0;
   static int16_t l_m2s=0;
 
-  wd6md_setspeed1(m1s,&l_m1s,&g_wd6md_J1,&g_wd6md_J2,&g_wd6md_J3);
-  wd6md_setspeed1(m2s,&l_m2s,&g_wd6md_B1,&g_wd6md_B2,&g_wd6md_B3);
+  wd6md_setspeed1(msr,&l_m1s,&g_wd6md_J1,&g_wd6md_J2,&g_wd6md_J3);
+  wd6md_setspeed1(msl,&l_m2s,&g_wd6md_B1,&g_wd6md_B2,&g_wd6md_B3);
 
   return(0);
 }

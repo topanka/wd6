@@ -20,4 +20,10 @@ typedef struct tagWD6MD {
   MYTMR tmr_rpm;
 } WD6MD;
 
+typedef struct tagWD6MDTRACE {
+  float dist;   // distance
+  int msr;              // right speed
+  int msl;              // left speed
+} WD6MDTRACE;
+
 #endif /* __WD6MD_H_INCLUDED__ */

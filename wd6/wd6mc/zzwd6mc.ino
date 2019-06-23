@@ -1,3 +1,14 @@
+int pyro=0;
+
+int ar(int pin)
+{
+  ADMUX=(1<<REFS0)|(1<<REFS1)|pin;
+  ADCSRA|=(1<<ADSC);
+  while(!(ADCSRA&(1<<ADIF)));
+  ADCSRA|=(1<<ADIF);
+  pyro=ADCL+(ADCH<<8);
+}
+
 void loop_counter(void)
 {
   g_millis=millis();
@@ -6,6 +17,10 @@ void loop_counter(void)
     
     Serial.print("loopcps ");
     Serial.println(g_loop_cps);
+//    pyro=ar(61);
+//    pyro=analogRead(A7);
+//    Serial.println(pyro);
+    
 //    Serial.print("battV: ");
 //    Serial.println(g_cb_battV);
 
