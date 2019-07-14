@@ -245,3 +245,6 @@ Servo g_servo_finscan;
 #define UCCB_REMOTEVIDEO_ON_OFF         LOW
 
 int g_remotevideo_on=UCCB_REMOTEVIDEO_ON_OFF;
+
+//piro sensor
+int16_t g_wd6_piro_val=0;

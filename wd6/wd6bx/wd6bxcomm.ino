@@ -216,7 +216,8 @@ int comm_unpackuccb(unsigned char *buf, unsigned int len,
                     unsigned int *m2c,
                     int16_t *m1rpm,
                     int16_t *m2rpm,
-                    int *temp)
+                    int16_t *temp,
+                    int16_t *piro_val)
 {
   unsigned int l;
   
@@ -229,6 +230,7 @@ int comm_unpackuccb(unsigned char *buf, unsigned int len,
   comm_unpack1((unsigned char *)m1rpm,sizeof(uint16_t),buf,&l);
   comm_unpack1((unsigned char *)m2rpm,sizeof(uint16_t),buf,&l);
   comm_unpack1((unsigned char *)temp,sizeof(int16_t),buf,&l);
+  comm_unpack1((unsigned char *)piro_val,sizeof(int16_t),buf,&l);
 
   return(0);
 }
@@ -256,7 +258,8 @@ int comm_recv(void)
                     &g_sh1_m2c,
                     &rpm1,
                     &rpm2,
-                    &g_sh1_temperature);
+                    &g_sh1_temperature,
+                    &g_wd6_piro_val);
                     
 g_sh1_loop_cps/=1000;
                     

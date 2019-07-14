@@ -29,7 +29,7 @@ void setup()
   light_setup();
   temp_setup();
   piro_setup();
-//  vl53l1_setup();
+  vl53l1x_setup();
   cumc_comm_setup();
   
   Serial.begin(115200);
@@ -40,7 +40,6 @@ void setup()
   pinMode(RESET_MD_PIN,INPUT_PULLUP);
 
 //  delay(1000);
-//  um6_setup();
   delay(1000);
   g_loop_ct=millis();
 }

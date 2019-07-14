@@ -46,7 +46,7 @@ int eval_doit(void)
   //servo_rudder();
   servo_holder();
   piro_doit();
-//  vl53l1_read();
+  vl53l1x_read();
   
 /*  
   if(g_cb_b6pBE == 11) {

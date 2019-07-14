@@ -53,6 +53,7 @@ int comm_packsh1(uint16_t *len)
   comm_pack1((byte*)&rpm1,sizeof(rpm1),g_w_commbuf,len);    //2:15
   comm_pack1((byte*)&rpm2,sizeof(rpm2),g_w_commbuf,len);    //2:17
   comm_pack1((byte*)&g_temperature,sizeof(g_temperature),g_w_commbuf,len);    //2:19
+  comm_pack1((byte*)&g_wd6_piro_val,sizeof(g_wd6_piro_val),g_w_commbuf,len);    //2:21
   crc8=getCRC(g_w_commbuf,*len);
 
 /*
@@ -61,9 +62,9 @@ int comm_packsh1(uint16_t *len)
   Serial.println(crc8);
 */
   
-  comm_pack1((byte*)&crc8,sizeof(crc8),g_w_commbuf,len);    //1:20
+  comm_pack1((byte*)&crc8,sizeof(crc8),g_w_commbuf,len);    //1:22
   
-//20 byte long  
+//22 byte long  
   
   return(0);
 }

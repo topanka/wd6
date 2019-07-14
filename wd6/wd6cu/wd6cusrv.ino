@@ -63,7 +63,7 @@ int servo_scan_start(void)
   return(0);
 }
 
-int servo_scan_onprogress(int val, int *max_val, int *max_pos)
+int servo_scan_onprogress(int val, int *min_val, int *max_val, int *max_pos)
 {
   int rval=-1;
 
@@ -78,11 +78,14 @@ int servo_scan_onprogress(int val, int *max_val, int *max_pos)
   
   if(g_wd6_holderpan_pos <= WD6_HOLDERPAN_MIN) {
     g_wd6_holderpan_pos=WD6_HOLDERPAN_MIN;
+    *min_val=val;
     *max_val=val;
     *max_pos=g_wd6_holderpan_pos;
   } else if(val > *max_val) {
     *max_val=val;
     *max_pos=g_wd6_holderpan_pos;
+  } else if(val < *min_val) {
+    *min_val=val;
   }
   if(g_wd6_holderpan_pos >= WD6_HOLDERPAN_MAX) {
     g_wd6_holderpan_pos=WD6_HOLDERPAN_MAX;

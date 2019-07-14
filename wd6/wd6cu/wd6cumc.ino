@@ -258,9 +258,13 @@ int cumc_comm(void)
   return(0);
 }
 
-int cumc_follow(int diff)
+#define FOLLOW_MIN_SPEED    150
+#define FOLLOW_MAX_SPEED    250
+
+int cumc_follow(int min_val, int max_val, int val, int diff)
 {
   int d;
+  static int l_speed=(FOLLOW_MIN_SPEED+FOLLOW_MAX_SPEED)/2;
   
 //  if(diff != 0) {
 //    Serial.println(diff);
@@ -278,20 +282,54 @@ int cumc_follow(int diff)
     g_cb_m2s=0;
   }
 */  
-
-  if(diff > 0) {
+  if(diff > 2) {
     if(diff > 6) diff=6;
-    d=map(diff,1,6,100,200);
+    d=map(diff,1,6,100,220);
     g_cb_m1s=-d;
     g_cb_m2s=d;
-  } else if(diff < 0) {
+  } else if(diff < -2) {
     if(diff < -6) diff=-6;
-    d=map(-diff,1,6,100,200);
+    d=map(-diff,1,6,100,220);
     g_cb_m1s=d;
     g_cb_m2s=-d;
   } else {
-    g_cb_m1s=0;
-    g_cb_m2s=0;
+    if(val < 0.90*max_val) {
+      if(val < 140) {
+        g_cb_m1s=0;
+        g_cb_m2s=0;
+      } else {
+        if(val < 0.7*max_val) {
+          l_speed+=2;
+        } else if(val > 0.8*max_val) {
+          l_speed-=2;
+        }
+        if(l_speed > FOLLOW_MAX_SPEED) l_speed=FOLLOW_MAX_SPEED;
+        else if(l_speed < FOLLOW_MIN_SPEED) l_speed=FOLLOW_MIN_SPEED;
+        if(diff == 1) {
+          g_cb_m1s=(3*l_speed)/4;
+          g_cb_m2s=l_speed;
+        } else if(diff == -1) {
+          g_cb_m1s=l_speed;
+          g_cb_m2s=(3*l_speed)/4;
+        } else if(diff == 2) {
+          g_cb_m1s=(2*l_speed)/3;
+          g_cb_m2s=l_speed;
+        } else if(diff == -2) {
+          g_cb_m1s=l_speed;
+          g_cb_m2s=(2*l_speed)/3;
+        } else {
+          g_cb_m1s=l_speed;
+          g_cb_m2s=l_speed;
+        }
+      }
+    } else if(val > 1.04*max_val) {
+      g_cb_m1s=-130;
+      g_cb_m2s=-130;
+    } else {
+      g_cb_m1s=0;
+      g_cb_m2s=0;
+      l_speed=(FOLLOW_MIN_SPEED+FOLLOW_MAX_SPEED)/2;
+    }
   }
 
   return(0);

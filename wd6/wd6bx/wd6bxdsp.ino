@@ -2062,6 +2062,25 @@ void dsp_scr_battshutdown(void)
     }
   }
 }
+
+void dsp_scr_debug(int force)
+{
+  static int l_piro=-1;
+  
+  if((force == 1) ||
+     (l_piro != g_wd6_piro_val)) {
+    
+    lcd.setCursor(0,1);
+    lcd.print("P=");
+    if(g_wd6_piro_val < 0) {
+      lcd.print(" -- ");
+    } else {
+      lcd.print(g_wd6_piro_val,10);
+      l_piro=g_wd6_piro_val;
+    }
+  }
+}
+
  
 void dsp_print(void)
 {
@@ -2116,6 +2135,9 @@ void dsp_print(void)
 //      dsp_scr_adjps(force);
 //      dsp_scr_tscr(force);
       dsp_scr_tools(force);
+      break;
+    case 7:
+      dsp_scr_debug(force);
       break;
     case 8:
       dsp_scr_ship3(force);
