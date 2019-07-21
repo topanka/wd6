@@ -2066,17 +2066,32 @@ void dsp_scr_battshutdown(void)
 void dsp_scr_debug(int force)
 {
   static int l_piro=-1;
+  static uint16_t l_vl53l1x_dist=0;
   
   if((force == 1) ||
-     (l_piro != g_wd6_piro_val)) {
+     (l_piro != g_wd6_piro_val) ||
+     (l_vl53l1x_dist != g_wd6_vl53l1x_dist)) {
     
-    lcd.setCursor(0,1);
-    lcd.print("P=");
-    if(g_wd6_piro_val < 0) {
-      lcd.print(" -- ");
-    } else {
-      lcd.print(g_wd6_piro_val,10);
-      l_piro=g_wd6_piro_val;
+    if(l_piro != g_wd6_piro_val) {
+      lcd.setCursor(0,1);
+      lcd.print("P=");
+      if(g_wd6_piro_val < 0) {
+        lcd.print(" -- ");
+      } else {
+        lcd.print(g_wd6_piro_val,10);
+        lcd.print("  ");
+        l_piro=g_wd6_piro_val;
+      }
+    } else if(l_vl53l1x_dist != g_wd6_vl53l1x_dist) {
+      lcd.setCursor(0,2);
+      lcd.print("R=");
+      if(g_wd6_vl53l1x_dist == 0) {
+        lcd.print(" -- ");
+      } else {
+        lcd.print(g_wd6_vl53l1x_dist,10);
+        lcd.print("  ");
+        l_piro=g_wd6_vl53l1x_dist;
+      }
     }
   }
 }

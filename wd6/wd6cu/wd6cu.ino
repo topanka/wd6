@@ -110,4 +110,6 @@ unsigned long g_piro_scan_start_t0=0;
 unsigned long g_piro_scan_stop_t0=0;
 int16_t g_wd6_piro_val=0;
 
+//vl53l1x
 MYTMR g_tmr_vl53l1x={0};
+uint16_t g_wd6_vl53l1x_dist=0;

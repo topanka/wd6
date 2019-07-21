@@ -248,3 +248,6 @@ int g_remotevideo_on=UCCB_REMOTEVIDEO_ON_OFF;
 
 //piro sensor
 int16_t g_wd6_piro_val=0;
+
+//vl53l1x
+uint16_t g_wd6_vl53l1x_dist=0;
