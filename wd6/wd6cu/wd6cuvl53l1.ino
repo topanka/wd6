@@ -11,155 +11,16 @@ int g_vl53l1xdist_i=0;
 int16_t g_vl53l1x_offset=24;
 uint16_t g_vl53l1x_xtalk=0;
 uint8_t g_vl53l1x_rangemode=VL53L1X_RANGE_LONG;
-
-#if 0
-VL53L1_Dev_t                   dev;
-VL53L1_DEV                     Dev = &dev;
-int status;
-
-void vl53l1_setup(void)
-{
-  uint8_t byteData;
-  uint16_t wordData;
-
-  Wire.begin();
-  Wire.setClock(400000);
-  Wire.setSCL(16);
-  Wire.setSDA(17);
-
-  Dev->I2cDevAddr = 0x52;
-
-  VL53L1_software_reset(Dev);
-
-  VL53L1_RdByte(Dev, 0x010F, &byteData);
-  Serial.print(F("VL53L1X Model_ID: "));
-  Serial.println(byteData, HEX);
-  VL53L1_RdByte(Dev, 0x0110, &byteData);
-  Serial.print(F("VL53L1X Module_Type: "));
-  Serial.println(byteData, HEX);
-  VL53L1_RdWord(Dev, 0x010F, &wordData);
-  Serial.print(F("VL53L1X: "));
-  Serial.println(wordData, HEX);
-
-  Serial.println(F("Autonomous Ranging Test"));
-  status = VL53L1_WaitDeviceBooted(Dev);
-Serial.print("VL53L1_WaitDeviceBooted:");
-Serial.println(status);
-  status = VL53L1_DataInit(Dev);
-Serial.print("VL53L1_DataInit:");
-Serial.println(status);
-  status = VL53L1_StaticInit(Dev);
-Serial.print("VL53L1_StaticInit:");
-Serial.println(status);
-  status = VL53L1_SetDistanceMode(Dev, VL53L1_DISTANCEMODE_LONG);
-//  status = VL53L1_SetDistanceMode(Dev, VL53L1_DISTANCEMODE_SHORT);
-Serial.print("VL53L1_SetDistanceMode:");
-Serial.println(status);
-  status = VL53L1_SetMeasurementTimingBudgetMicroSeconds(Dev, 50000);
-Serial.print("VL53L1_SetMeasurementTimingBudgetMicroSeconds:");
-Serial.println(status);
-  status = VL53L1_SetInterMeasurementPeriodMilliSeconds(Dev, 1000); // reduced to 50 ms from 500 ms in ST example
-Serial.print("VL53L1_SetInterMeasurementPeriodMilliSeconds:");
-Serial.println(status);
-  status = VL53L1_StartMeasurement(Dev);
-Serial.print("VL53L1_StartMeasurement:");
-Serial.println(status);
-
-  if(status) {
-    Serial.println(F("VL53L1_StartMeasurement failed"));
-    while(1);
-  }
-}
-
-void vl53l1_read(void)
-{
-  static VL53L1_RangingMeasurementData_t RangingData;
-
-  status = VL53L1_WaitMeasurementDataReady(Dev);
-  if(status == VL53L1_ERROR_NONE) {
-    status = VL53L1_GetRangingMeasurementData(Dev,&RangingData);
-    if(status == VL53L1_ERROR_NONE) {
-//      if(RangingData.RangeStatus == VL53L1_RANGESTATUS_RANGE_VALID) {
-        Serial.print(RangingData.RangeStatus);
-        Serial.print(F(","));
-        Serial.print(RangingData.RangeMilliMeter);
-        Serial.print(F(","));
-        Serial.print(RangingData.SignalRateRtnMegaCps/65536.0);
-        Serial.print(F(","));
-        Serial.println(RangingData.AmbientRateRtnMegaCps/65336.0);
-//      }
-      status = VL53L1_ClearInterruptAndStartMeasurement(Dev);
-    }
-//    status = VL53L1_ClearInterruptAndStartMeasurement(Dev);
-  } else {
-    Serial.print(F("error waiting for data ready: "));
-    Serial.println(status);
-  }
-}
-#endif
-
-#if 0
-VL53L1X vl53l1x;
-
-void vl53l1x_setup(void)
-{
-  Wire.begin();
-  Wire.setClock(400000); // use 400 kHz I2C
-  Wire.setSCL(16);
-  Wire.setSDA(17);
-
-  vl53l1x.setTimeout(500);
-  if (!vl53l1x.init())
-  {
-    Serial.println("Failed to detect and initialize sensor!");
-    while (1);
-  }
-  // Use long distance mode and allow up to 50000 us (50 ms) for a measurement.
-  // You can change these settings to adjust the performance of the sensor, but
-  // the minimum timing budget is 20 ms for short distance mode and 33 ms for
-  // medium and long distance modes. See the VL53L1X datasheet for more
-  // information on range and timing limits.
-  vl53l1x.setDistanceMode(VL53L1X::Long);
-  vl53l1x.setMeasurementTimingBudget(50000);
-//  vl53l1x.setMeasurementTimingBudget(100000);
-
-  // Start continuous readings at a rate of one measurement every 50 ms (the
-  // inter-measurement period). This period should be at least as long as the
-  // timing budget.
-  vl53l1x.startContinuous(50);
-
-  tmr_init(&g_tmr_vl53l1x,50);
-  
-  Serial.println("vl53l1x ready!");
-  
-}
-
-int vl53l1x_read(void)
-{
-//  if(tmr_do(&g_tmr_vl53l1x) != 1) return(0);
-
-  if(!vl53l1x.dataReady()) return(0);
-
-  g_vl53l1xdist_d[g_vl53l1xdist_i].t=g_millis;
-  g_vl53l1xdist_d[g_vl53l1xdist_i].d=vl53l1x.read(false);
-
-  Serial.print(vl53l1x.rangeStatusToString(vl53l1x.ranging_data.range_status));
-  Serial.print(" ");
-  Serial.print(g_vl53l1xdist_d[g_vl53l1xdist_i].d);
-//  if (vl53l1x.timeoutOccurred()) { Serial.print(" TIMEOUT"); }
-
-  Serial.println();
-  g_vl53l1xdist_i++;
-  g_vl53l1xdist_i%=(sizeof(g_vl53l1xdist_d)/sizeof(g_vl53l1xdist_d[0]));
-  
-  return(1);
-}
-#endif
-
+volatile uint8_t g_vl53l1x_dataready=0;
 
 #define VL53L1X_BOOT_READY     3
 
 VL53L1X vl53l1x(&Wire);
+
+void ISR_vl53l1x_dataready(void)
+{
+  g_vl53l1x_dataready=1;
+}
 
 int vl53l1x_calibration(void)
 {
@@ -219,7 +80,8 @@ const char *vl53l1x_rangeStatusToString(uint8_t status)
 int vl53l1x_setrange(uint16_t mode, uint32_t im, uint16_t tb)
 {
   VL53L1X_ERROR err;
-  
+
+  if(im < tb) return(-1);
   err=vl53l1x.VL53L1X_SetDistanceMode(mode);
   if(err != 0) return(-1);
   err=vl53l1x.VL53L1X_SetInterMeasurementInMs(im);
@@ -315,6 +177,8 @@ void vl53l1x_setup(void)
   err=vl53l1x.VL53L1X_SetInterMeasurementInMs(50);
   err=vl53l1x.VL53L1X_SetTimingBudgetInMs(50);
 */
+  pinMode(24,INPUT_PULLUP);
+  attachInterrupt(24,ISR_vl53l1x_dataready,RISING);
   
   vl53l1x_setrange(g_vl53l1x_rangemode,50,50);
   
@@ -329,30 +193,44 @@ void vl53l1x_setup(void)
   Serial.println(xtalk);
 
   showroi();
-  vl53l1x.VL53L1X_SetROI(4,4);
+  vl53l1x.VL53L1X_SetROI(16,16);
   showroi();
   
    
   err=vl53l1x.VL53L1X_StartRanging();
 
-  Serial.println("vl53l1x ready!");
+  Serial.println("vl53l1x setup OK!");
   
 }
 
 int vl53l1x_read(void)
 {
   VL53L1X_ERROR err;
-  uint8_t dr=0,rs=0;
+  uint8_t rs=0;
   uint16_t dist;
   
 //  if(tmr_do(&g_tmr_vl53l1x) != 1) return(0);
 
+/*
   err=vl53l1x.VL53L1X_CheckForDataReady(&dr);
   if(err != 0) return(0);
   if(dr != 1) return(0);
+*/
+
+  if(g_vl53l1x_dataready != 1) return(0);
+    
   err=vl53l1x.VL53L1X_GetRangeStatus(&rs);
+  if(err != 0) {
+    Serial.println("rangestatuserror");
+    return(0);
+  }
   err=vl53l1x.VL53L1X_GetDistance(&dist);
-  err=vl53l1x.VL53L1X_ClearInterrupt();
+  if(err != 0) {
+    Serial.println("getdistanceerror");
+    return(0);
+  }
+  vl53l1x.VL53L1X_ClearInterrupt();
+  g_vl53l1x_dataready=0;
 
   g_vl53l1xdist_d[g_vl53l1xdist_i].t=g_millis;
   g_vl53l1xdist_d[g_vl53l1xdist_i].d=dist;
@@ -361,11 +239,13 @@ int vl53l1x_read(void)
   g_wd6_vl53l1x_dist=dist;
 
   if(tmr_do(&g_tmr_vl53l1x) != 1) return(0);
-  
+
+/*  
   Serial.print(vl53l1x_rangeStatusToString(rs));
   Serial.print(": ");
   Serial.print(dist);
   Serial.println();
+*/  
 
   if((dist < 1000) && (g_vl53l1x_rangemode != VL53L1X_RANGE_SHORT)) {
     Serial.println("setting short range");
@@ -373,7 +253,7 @@ int vl53l1x_read(void)
     g_vl53l1x_rangemode=VL53L1X_RANGE_SHORT;
   } else if((dist > 1300) && (g_vl53l1x_rangemode != VL53L1X_RANGE_LONG)) {
     Serial.println("setting long range");
-    vl53l1x_longrange(50,50);
+    vl53l1x_longrange(100,100);
     g_vl53l1x_rangemode=VL53L1X_RANGE_LONG;
   }
   

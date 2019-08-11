@@ -1,7 +1,5 @@
 void eval_setup(void)
 {
-  pinMode(13,OUTPUT);
-  
   tmr_init(&g_tmr_lightpos,100);
 }
 
@@ -30,23 +28,12 @@ int eval_doit(void)
     g_piro_scan=PIRO_SCAN_STOP;
   }      
   
-#if 0  
-  if(g_cb_fsBE != 0) {
-      digitalWrite(13,HIGH);
-//    md_go();
-  }  
-#endif  
-
-  if(g_cb_b6pBE != 0) {
-    digitalWrite(13,LOW);
-//    md_stop();
-  }      
-  
   //md_setspeed();
   //servo_rudder();
   servo_holder();
   piro_doit();
   vl53l1x_read();
+  pmw3901_read();
   
 /*  
   if(g_cb_b6pBE == 11) {

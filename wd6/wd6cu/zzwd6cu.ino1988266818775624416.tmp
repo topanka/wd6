@@ -22,12 +22,8 @@ void setup()
   analogReadResolution(10); 
 
   Serial.begin(115200);
-  
-  // Configure SPI Flash chip select
-  pinMode(WD6CU_SPI_CS_PIN,OUTPUT);
-  digitalWrite(WD6CU_SPI_CS_PIN,HIGH);
   SPI.begin(); // initiate SPI 
-
+  
   smar_setup();
   batt_setup();
   eval_setup();

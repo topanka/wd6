@@ -6,15 +6,19 @@
 #include <RunningAverage.h>
 #include <Servo.h>
 #include <Wire.h>
+#include <SPI.h>                         // Include the SPI library
 
 //#include <vl53l1_api.h>
 //#include "SparkFun_VL53L1X.h"
 //#include "VL53L1X.h"
 #include "vl53l1x_class.h"
+#include "Bitcraze_PMW3901.h"
 
 #define WD6CU_VERSION        "1.0.2"
 
 #define RESET_MD_PIN                 2
+
+#define WD6CU_SPI_CS_PIN  15  // chip select for SPI
 
 //battery
 #define UCCB_BATTV_PORT              A16
@@ -113,3 +117,7 @@ int16_t g_wd6_piro_val=0;
 //vl53l1x
 MYTMR g_tmr_vl53l1x={0};
 uint16_t g_wd6_vl53l1x_dist=0;
+
+//pmw3901
+
+MYTMR g_tmr_pmw3901={0};
