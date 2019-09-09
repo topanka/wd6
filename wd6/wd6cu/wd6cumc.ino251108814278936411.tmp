@@ -237,7 +237,7 @@ int cumc_comm_recv(void)
     g_rpm_m1=(g_mc_J1rpm+g_mc_J2rpm+g_mc_J3rpm)/3;                  
     g_rpm_m2=(g_mc_B1rpm+g_mc_B2rpm+g_mc_B3rpm)/3;                  
     g_cur_m1=(g_mc_J1cur+g_mc_J2cur+g_mc_J3cur)/3;                  
-    g_cur_m2=(g_mc_B1cur+g_mc_B2cur+g_mc_B3cur)/3;
+    g_cur_m2=(g_mc_B1cur+g_mc_B2cur+g_mc_B3cur)/3
     if(g_cur_m1 < 50) g_cur_m1=0;
     if(g_cur_m2 < 50) g_cur_m2=0;
 

@@ -3,6 +3,7 @@ int16_t g_deltaX=0,g_deltaY=0;
 int32_t g_pmw3901_sumX=0;
 int32_t g_pmw3901_sumY=0;
 int g_pmw3901_rotinprogress=0;
+int g_pmw3901_dataready=0;
 
 Bitcraze_PMW3901 pmw3901(WD6CU_SPI_CS_PIN); // Instantiate PMW3901
 
@@ -65,21 +66,26 @@ Serial.println("pmw3901 setup completed");
 
 int pmw3901_read(void)
 {
+  g_pmw3901_dataready=0;
   if(tmr_do(&g_tmr_pmw3901) != 1) return(0);
  
   pmw3901.readMotionCount(&g_deltaX,&g_deltaY);
+  g_pmw3901_dataready=1;
+
 
     Serial.print("X: ");
     Serial.print(g_deltaX);
     Serial.print(", Y: ");
     Serial.print(g_deltaY);
     Serial.print("\n");
+    
  
   return(0);
 }
 
 int pmw3901_rot_start(void)
 {
+Serial.println("rot start");
   g_pmw3901_sumX=0;
   g_pmw3901_sumY=0;
   g_pmw3901_rotinprogress=1;
@@ -90,13 +96,32 @@ int pmw3901_rot_start(void)
 int pmw3901_rot_stop(int angle)
 {
   if(g_pmw3901_rotinprogress != 1) return(0);
+  if(g_pmw3901_dataready == 0) return(0);
   
   g_pmw3901_sumX+=g_deltaX;
   g_pmw3901_sumY+=g_deltaY;
 
-  if(g_pmw3901_sumX >= angle) {
-    g_pmw3901_rotinprogress=0;
+  if(g_pmw3901_sumX != 0) {
+    Serial.print("sum: ");
+    Serial.print(g_pmw3901_sumX);
+    Serial.print(" ");
+    Serial.println(g_pmw3901_sumY);
+    if(g_pmw3901_sumY >= 80.0*cos(3.14*angle/180.0)) {
+      g_pmw3901_rotinprogress=0;
+    }
   }
 
   return(1);
+}
+
+int pmw3901_test(void)
+{
+  g_cb_m1s=-90;
+  g_cb_m2s=90;
+  pmw3901_rot_stop(15);
+  if(g_pmw3901_rotinprogress == 0) {
+    g_cb_m1s=0;
+    g_cb_m2s=0;
+  }
+  return(0);
 }

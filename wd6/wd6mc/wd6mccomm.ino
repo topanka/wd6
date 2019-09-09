@@ -14,7 +14,8 @@ int comm_setup(void)
   Serial2.begin(500000);
   buildCRCTable();
 //  tmr_init(&g_tmr_comm,250);
-  tmr_init(&g_tmr_comm,125);
+//  tmr_init(&g_tmr_comm,125);
+  tmr_init(&g_tmr_comm,100);
 }
 
 int wd6md_comm_pack1(byte *d, uint16_t l, byte *buf, uint16_t *len)
@@ -47,17 +48,23 @@ int wd6md_comm_packtscr(uint16_t *len)
   wd6md_comm_pack1((byte*)&g_wd6md_B1.re->rpm,sizeof(uint16_t),g_wmd_commbuf,len);    //2:13
   wd6md_comm_pack1((byte*)&g_wd6md_B2.re->rpm,sizeof(uint16_t),g_wmd_commbuf,len);    //2:15
   wd6md_comm_pack1((byte*)&g_wd6md_B3.re->rpm,sizeof(uint16_t),g_wmd_commbuf,len);    //2:17
-  x=g_wd6md_J1.curr->getValue();
+  x=g_wd6md_J1.ra_mc->getAverage();
+  if(x < 50) x=0;
   wd6md_comm_pack1((byte*)&x,sizeof(uint16_t),g_wmd_commbuf,len);    //2:19
-  x=g_wd6md_J2.curr->getValue();
+  x=g_wd6md_J2.ra_mc->getAverage();
+  if(x < 50) x=0;
   wd6md_comm_pack1((byte*)&x,sizeof(uint16_t),g_wmd_commbuf,len);    //2:21
-  x=g_wd6md_J3.curr->getValue();
+  x=g_wd6md_J3.ra_mc->getAverage();
+  if(x < 50) x=0;
   wd6md_comm_pack1((byte*)&x,sizeof(uint16_t),g_wmd_commbuf,len);    //2:23
-  x=g_wd6md_B1.curr->getValue();
+  x=g_wd6md_B1.ra_mc->getAverage();
+  if(x < 50) x=0;
   wd6md_comm_pack1((byte*)&x,sizeof(uint16_t),g_wmd_commbuf,len);    //2:25
-  x=g_wd6md_B2.curr->getValue();
+  x=g_wd6md_B2.ra_mc->getAverage();
+  if(x < 50) x=0;
   wd6md_comm_pack1((byte*)&x,sizeof(uint16_t),g_wmd_commbuf,len);    //2:27
-  x=g_wd6md_B3.curr->getValue();
+  x=g_wd6md_B3.ra_mc->getAverage();
+  if(x < 50) x=0;
   wd6md_comm_pack1((byte*)&x,sizeof(uint16_t),g_wmd_commbuf,len);    //2:29
   crc8=getCRC(g_wmd_commbuf,*len);
   wd6md_comm_pack1((byte*)&crc8,sizeof(crc8),g_wmd_commbuf,len);    //1:30

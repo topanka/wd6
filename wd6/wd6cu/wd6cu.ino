@@ -119,5 +119,4 @@ MYTMR g_tmr_vl53l1x={0};
 uint16_t g_wd6_vl53l1x_dist=0;
 
 //pmw3901
-
 MYTMR g_tmr_pmw3901={0};

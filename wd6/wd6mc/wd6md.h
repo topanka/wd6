@@ -2,7 +2,7 @@
 #define __WD6MD_H_INCLUDED__
 
 #include "sh1tmr.h"
-#include "ResponsiveAnalogRead.h"
+#include "RunningAverage.h"
 
 typedef struct tagWD6MDAM {
   uint8_t go;
@@ -14,7 +14,7 @@ typedef struct tagWD6MD {
   const char *name;
   VNH5019MD *md;
   WD6RE *re;
-  ResponsiveAnalogRead *curr;
+  RunningAverage *ra_mc;
   unsigned char overloaded;
   WD6MDAM am;
   MYTMR tmr_rpm;

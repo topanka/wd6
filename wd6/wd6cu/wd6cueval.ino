@@ -11,6 +11,7 @@ int eval_doit(void)
 //  if(g_recv_ready != 1) return(0);
   
   if((g_cb_fsBE == 11) && (g_recv_ready == 1)) {
+//    pmw3901_rot_start();
     sw++;
     sw%=2;
     if(sw == 1) {
@@ -34,6 +35,7 @@ int eval_doit(void)
   piro_doit();
   vl53l1x_read();
   pmw3901_read();
+//  pmw3901_test();
   
 /*  
   if(g_cb_b6pBE == 11) {

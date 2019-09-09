@@ -249,6 +249,40 @@ int tscr_comm(void)
   tscr_comm_recv();
 }
 
+int tscr_ms_eval(int *m1s, int *m2s, int *rdd)
+{
+  int cd=60,ard,mns=60,ams,v,mxs=100;
+
+  ams=*m1s;
+  ams=abs(ams);
+  if(ams < mns) {
+    *m2s=*m1s;
+    return(0);
+  }
+  
+  ard=abs(g_tscr_rudder);
+  if(ard > 90) ard=90;
+  if(ard < cd) {
+    *m2s=map(ard,0,cd,*m1s,mns);
+  } else {
+    *m2s=map(ard,cd,90,-mns,-mxs);
+  }
+  
+  if(g_tscr_rudder < 0) {
+    v=*m1s;  
+    *m1s=*m2s;
+    *m2s=v;
+  }
+    
+  Serial.print("tscr: ");
+  Serial.print(*m1s);
+  Serial.print(" ");
+  Serial.print(*m2s);
+  Serial.println();
+  
+  return(0);
+}
+
 int tscr_md_speed(int *m1s, int *m2s, int *rdd)
 {
   g_tscr_takeover=0;
@@ -258,15 +292,16 @@ int tscr_md_speed(int *m1s, int *m2s, int *rdd)
 //  *m1s=(g_tscr_power*(g_sh1_maxmspeed-UCCB_MD_MINSPEED_FWD))/100;
 
   if(g_tscr_power > 0) {
-    *m1s=UCCB_MD_MINSPEED_FWD+(g_tscr_power*(g_sh1_maxmspeed-UCCB_MD_MINSPEED_FWD))/100;
+    *m1s=UCCB_MD_MINSPEED_FWD+((long)g_tscr_power*(g_sh1_maxmspeed-UCCB_MD_MINSPEED_FWD))/100;
   } else if(g_tscr_power < 0) {
-    *m1s=-UCCB_MD_MINSPEED_FWD+(g_tscr_power*(g_sh1_maxmspeed-UCCB_MD_MINSPEED_FWD))/100;
+    *m1s=-UCCB_MD_MINSPEED_FWD+((long)g_tscr_power*(g_sh1_maxmspeed-UCCB_MD_MINSPEED_FWD))/100;
   } else {
     *m1s=0;
   }
+
+  tscr_ms_eval(m1s,m2s,rdd);
 
   *m2s=*m1s;
   *rdd=(((100*g_tscr_rudder)/90)*UCCB_RDD_MAXPOS)/100;
   return(0);
 }
-
