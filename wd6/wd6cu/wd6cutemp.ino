@@ -20,15 +20,15 @@ int temp_read(void)
 
   g_temperature=0;
 
-/*  
-  Serial.print(temp/10);
-  Serial.print(".");
-  Serial.print(temp%10);
-  Serial.println("C");
-  Serial.print(g_battV);
-  Serial.print(" ");
-  Serial.println(g_battA);
-*/
+  
+//  Serial.print(temp/10);
+//  Serial.print(".");
+//  Serial.print(temp%10);
+//  Serial.println("C");
+//  Serial.print(g_battV);
+//  Serial.print(" ");
+//  Serial.println(g_battA);
+  Serial.println(g_wd6_vl53l1x_dist);
 
   
   

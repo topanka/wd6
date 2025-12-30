@@ -8,7 +8,7 @@
 #include "RunningAverage.h"
 
 int wd6re_readrpm(WD6MD *wd6md);
-int wd6md_setrpm(WD6MD *wd6md, int rpm, int dir);
+int wd6md_setrpm(WD6MD *wd6md, uint16_t rpm, int dir);
 int  wd6md_setspeed1(int16_t ms, int16_t *ms_p, WD6MD *wd6md1, WD6MD *wd6md2, WD6MD *wd6md3);
 uint16_t qe_rpm_tbi(WD6RE *wd6re);
 

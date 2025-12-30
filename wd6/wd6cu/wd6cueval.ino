@@ -31,10 +31,10 @@ int eval_doit(void)
   
   //md_setspeed();
   //servo_rudder();
-  servo_holder();
-  piro_doit();
+//  servo_holder();
+//  piro_doit();
   vl53l1x_read();
-  pmw3901_read();
+//  pmw3901_read();
 //  pmw3901_test();
   
 /*  

@@ -263,10 +263,11 @@ int tscr_ms_eval(int *m1s, int *m2s, int *rdd)
   ard=abs(g_tscr_rudder);
   if(ard > 90) ard=90;
   if(ard < cd) {
-    *m2s=map(ard,0,cd,*m1s,mns);
+    *m2s=map(ard,0,cd,ams,mns);
   } else {
     *m2s=map(ard,cd,90,-mns,-mxs);
   }
+  if(*m1s < 0) *m2s=-(*m2s);
   
   if(g_tscr_rudder < 0) {
     v=*m1s;  
@@ -274,12 +275,6 @@ int tscr_ms_eval(int *m1s, int *m2s, int *rdd)
     *m2s=v;
   }
     
-  Serial.print("tscr: ");
-  Serial.print(*m1s);
-  Serial.print(" ");
-  Serial.print(*m2s);
-  Serial.println();
-  
   return(0);
 }
 
@@ -301,7 +296,14 @@ int tscr_md_speed(int *m1s, int *m2s, int *rdd)
 
   tscr_ms_eval(m1s,m2s,rdd);
 
-  *m2s=*m1s;
+  Serial.print("tscr: ");
+  Serial.print(*m1s);
+  Serial.print(" ");
+  Serial.print(*m2s);
+  Serial.println();
+
+
+//  *m2s=*m1s;
   *rdd=(((100*g_tscr_rudder)/90)*UCCB_RDD_MAXPOS)/100;
   return(0);
 }

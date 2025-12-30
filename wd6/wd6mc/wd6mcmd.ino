@@ -51,7 +51,7 @@ int wd6md_setup(void)
   return(0);
 }
 
-int wd6md_setrpm(WD6MD *wd6md, int rpm, int dir)
+int wd6md_setrpm(WD6MD *wd6md, uint16_t rpm, int dir)
 {
   int sd,rpmd,stp;
   
@@ -264,7 +264,7 @@ int wd6md_am(void)
     return(0);
   }      
   if(g_wd6md_am == 0) return(0);
-  if((g_wd6md_am_goidx >= sizeof(tr)/sizeof(tr[0])) || (g_wd6md_am_goidx < 0)) {
+  if((g_wd6md_am_goidx >= (int)(sizeof(tr)/sizeof(tr[0]))) || (g_wd6md_am_goidx < 0)) {
     g_wd6md_am=0;
     g_wd6md_am_go=0;
     g_wd6md_am_goidx=-1;

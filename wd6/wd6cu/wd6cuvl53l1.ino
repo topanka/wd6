@@ -15,7 +15,7 @@ volatile uint8_t g_vl53l1x_dataready=0;
 
 #define VL53L1X_BOOT_READY     3
 
-VL53L1X vl53l1x(&Wire);
+VL53L1X vl53l1x(&Wire,6);
 
 void ISR_vl53l1x_dataready(void)
 {
@@ -119,7 +119,7 @@ void showroi(void)
   
 }
   
-void vl53l1x_setup(void)
+int vl53l1x_setup(void)
 {
   uint8_t state;
   VL53L1X_ERROR err;
@@ -133,6 +133,13 @@ void vl53l1x_setup(void)
   Wire.setClock(400000); // use 400 kHz I2C
   Wire.setSCL(16);
   Wire.setSDA(17);
+  pinMode(6,OUTPUT);
+  digitalWrite(6,HIGH);
+
+   Serial.println("waiting for vl53l1x setup");
+delay(1000);
+   Serial.println("vl53l1x setup start");
+
 
   t0=millis();
   for(;;) {
@@ -140,16 +147,20 @@ void vl53l1x_setup(void)
     if((err == 0) && (state == VL53L1X_BOOT_READY)) break;
     if((millis()-t0) > 1000) break;
     delay(10);
+   Serial.println("vl53l1x setup start0");
   }
 
+   Serial.println("vl53l1x setup start1");
+
   if(state == VL53L1X_BOOT_READY) {
-    Serial.println("vl53l1x ready!");
+    Serial.println("vl53l1x boot ready!");
   } else {
     Serial.print(err);
     Serial.print(" ");
     Serial.print(state);
     Serial.print(" ");
     Serial.println("vl53l1x boot failure!");
+    return(-1);
   }
   tmr_init(&g_tmr_vl53l1x,1000);
   
@@ -195,12 +206,17 @@ void vl53l1x_setup(void)
   showroi();
   vl53l1x.VL53L1X_SetROI(16,16);
   showroi();
-  
    
   err=vl53l1x.VL53L1X_StartRanging();
 
+  Serial.println("vl53l1x shutting down!");
+  detachInterrupt(24);
+  vl53l1x.VL53L1X_Off();
+  delay(10);
+
   Serial.println("vl53l1x setup OK!");
-  
+
+  return(0);
 }
 
 int vl53l1x_read(void)
@@ -259,3 +275,49 @@ int vl53l1x_read(void)
   
   return(1);
 }
+/*****************************************************************************/
+int vl53lx1_restart(void)
+{
+  static int l_vl53l1x=0;
+  uint8_t state;
+  VL53L1X_ERROR err;
+  unsigned long t0;
+
+  if((g_millis > 25000) && (l_vl53l1x == 0)) {
+    l_vl53l1x=1;
+    Serial.println("vl53l1x rebooting ...");
+    vl53l1x.VL53L1X_On();
+    delay(10);
+
+    t0=millis();
+    for(;;) {
+      err=vl53l1x.VL53L1X_BootState(&state);
+      if((err == 0) && (state == VL53L1X_BOOT_READY)) break;
+      if((millis()-t0) > 1000) break;
+      delay(10);
+    }
+
+    if(state == VL53L1X_BOOT_READY) {
+      Serial.println("vl53l1x reboot ready!");
+    } else {
+      Serial.print(err);
+      Serial.print(" ");
+      Serial.print(state);
+      Serial.print(" ");
+      Serial.println("vl53l1x reboot failure!");
+      return(-1);
+    }
+
+    err=vl53l1x.VL53L1X_SensorInit();
+    pinMode(24,INPUT_PULLUP);
+    attachInterrupt(24,ISR_vl53l1x_dataready,RISING);
+    vl53l1x_setrange(g_vl53l1x_rangemode,50,50);
+    err=vl53l1x.VL53L1X_SetOffset(g_vl53l1x_offset);
+    err=vl53l1x.VL53L1X_SetXtalk(g_vl53l1x_xtalk);
+    vl53l1x.VL53L1X_SetROI(16,16);
+    err=vl53l1x.VL53L1X_StartRanging();
+  }
+
+  return(0);
+}
+/*****************************************************************************/

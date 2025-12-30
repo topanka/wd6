@@ -264,7 +264,7 @@ int comm_recv(void)
                     &g_wd6_piro_val,
                     &g_wd6_vl53l1x_dist);
                     
-g_sh1_loop_cps/=1000;
+g_sh1_loop_cps/=10;
                     
     g_shiptobeready=1;
     g_commmode=1;

@@ -16,6 +16,8 @@ int comm_setup(void)
 //  tmr_init(&g_tmr_comm,250);
 //  tmr_init(&g_tmr_comm,125);
   tmr_init(&g_tmr_comm,100);
+
+  return(0);
 }
 
 int wd6md_comm_pack1(byte *d, uint16_t l, byte *buf, uint16_t *len)
@@ -94,7 +96,7 @@ int comm_send(void)
 
 int comm_read(int *state, unsigned char *buf, unsigned int *len)
 {
-  int rval=-1,ret,nr=0,i;
+  int rval=-1,nr=0;
   unsigned char c1;
   unsigned char crc8;
 //  static unsigned long xx=0;
@@ -239,7 +241,7 @@ int comm_unpackcu(unsigned char *buf, unsigned long len,
 
 int comm_recv(void)
 {
-  int ret,stb,pwr0,poslight;
+  int ret,stb;
 
   ret=comm_read(&g_rmd_state,g_rmd_commbuf,&g_rmd_len);
   
@@ -285,4 +287,6 @@ int wd6cumd_comm(void)
 {
   comm_send();
   comm_recv();
+
+  return(0);
 }

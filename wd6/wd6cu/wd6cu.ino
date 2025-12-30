@@ -4,7 +4,7 @@
 #include <piro.h>
 
 #include <RunningAverage.h>
-#include <Servo.h>
+//#include <Servo.h>
 #include <Wire.h>
 #include <SPI.h>                         // Include the SPI library
 
@@ -12,7 +12,7 @@
 //#include "SparkFun_VL53L1X.h"
 //#include "VL53L1X.h"
 #include "vl53l1x_class.h"
-#include "Bitcraze_PMW3901.h"
+//#include "Bitcraze_PMW3901.h"
 
 #define WD6CU_VERSION        "1.0.2"
 

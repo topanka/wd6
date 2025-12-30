@@ -63,3 +63,12 @@ int joy_fs_btn(int *be)
   return(bs);
 }
 
+int joy_fs_refine(int *x, int *y, int *z)
+{
+  if(abs(*z-g_fs_cenZ) > 20) {
+    if(abs(*x-g_fs_cenX) < 20) *x=g_fs_cenX;
+    if(abs(*y-g_fs_cenY) < 20) *y=g_fs_cenY;
+  }
+
+  return(0);
+}

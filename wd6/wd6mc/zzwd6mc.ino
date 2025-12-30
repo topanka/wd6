@@ -1,5 +1,6 @@
 int pyro=0;
 
+/*
 int ar(int pin)
 {
   ADMUX=(1<<REFS0)|(1<<REFS1)|pin;
@@ -7,7 +8,10 @@ int ar(int pin)
   while(!(ADCSRA&(1<<ADIF)));
   ADCSRA|=(1<<ADIF);
   pyro=ADCL+(ADCH<<8);
+
+  return(0);
 }
+*/
 
 void loop_counter(void)
 {
@@ -131,7 +135,7 @@ pinMode(LED_BUILTIN,OUTPUT);
 
 void loop()
 {
-  int rpm,dir,speed;
+//  int rpm,dir,speed;
   
   loop_counter();
   

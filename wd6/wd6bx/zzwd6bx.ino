@@ -48,6 +48,8 @@ void loop()
   joy_ts_read(&g_tsX,&g_tsY);
   joy_fs_read(&g_fsX,&g_fsY,&g_fsZ);
    
+  joy_fs_refine(&g_fsX,&g_fsY,&g_fsZ);
+  
   g_fsBS=joy_fs_btn(&g_fsBE);
 //g_fsBE=BTN_NOP;
 

@@ -32,12 +32,12 @@ void setup()
   batt_setup();
   eval_setup();
   comm_setup();
-  servo_setup();
+//  servo_setup();
   light_setup();
   temp_setup();
-  piro_setup();
+//  piro_setup();
   vl53l1x_setup();
-  pmw3901_setup();
+//  pmw3901_setup();
   cumc_comm_setup();
   
   pinMode(RESET_MD_PIN,OUTPUT);
@@ -53,9 +53,11 @@ void loop()
 {
   g_millis=millis();
   loop_counter();
-  
+
+  vl53lx1_restart();
+
   batt_read(&g_battV,&g_battA);
-//  temp_read();
+  temp_read();
   bxcu_comm();
   eval_doit();
   cumc_comm();
